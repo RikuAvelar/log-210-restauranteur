@@ -6,9 +6,13 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
-
+`ruby ~ 1.9`
 * System dependencies
-
+`node >= 10.20`
+`grunt-cli >= 0.1.9`
+`bower >= 1.2.8`
+`yeoman >= 1.1.2`
+`generator-angular >= 0.7.1`
 * Configuration
 
 * Database creation
