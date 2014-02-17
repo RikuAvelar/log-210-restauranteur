@@ -11,7 +11,6 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
     padding-bottom: 20px;
 }
 
@@ -25,7 +24,9 @@ body {
 
 /* Custom page header */
 .header {
+    padding-top: 20px;
     border-bottom: 1px solid #e5e5e5;
+    background: #f3f3f3;
 }
 
 /* Make the masthead heading the same height as the navigation */
@@ -34,6 +35,11 @@ body {
     margin-bottom: 0;
     line-height: 40px;
     padding-bottom: 19px;
+}
+
+.header .nav-tabs{
+  margin-top:19px;
+  margin-bottom:-1px;
 }
 
 /* Custom page footer */
