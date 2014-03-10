@@ -2,6 +2,59 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
+/* Animation */
+@mixin animateAll($speed: 300ms){
+  -webkit-transition: $speed linear all; // Chrome
+  transition: $speed linear all;
+}
+@mixin delayAnimation($delay: 300ms){
+  -webkit-transition-delay: $delay; // Chrome
+  transition-delay: $delay;
+}
+.slide {
+  @include animateAll();
+  position: relative;
+  &.ng-enter{
+    left:100%;
+    position:absolute;
+    top:0;
+  }
+  &.ng-enter-active{
+    left:0%;
+  }
+
+  &.ng-leave{
+    left:0%;
+  }
+  &.ng-leave-active{
+    left:-166%;
+  }
+}
+
+.retick{
+  @include animateAll(150ms);
+  position: relative;
+  &.ng-leave{
+    top:0;
+  }
+  &.ng-leave-active{
+    top:2em;
+  }
+  &.ng-enter{
+    @include delayAnimation(150ms);
+    top:2em;
+  }
+  &.ng-enter-active{
+    top:0;
+  }
+}
+
+[ng-click]{
+  cursor:pointer;
+}
+
+/* End Animation */
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -9,9 +62,24 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
     padding: 0.2em 0;
 }
 
+.ng-cloak {
+  display:none!important;
+}
+
 /* Space out content a bit */
 body {
     padding-bottom: 20px;
+}
+
+/* Jump to container for pos (Header priority) */
+
+body > .container {
+  position: relative;
+}
+
+/* Views should use all the room they are given */
+.view {
+  width:100%;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -40,6 +108,7 @@ body {
 .header .nav-tabs{
   margin-top:19px;
   margin-bottom:-1px;
+  overflow: hidden;
 }
 
 /* Custom page footer */
@@ -94,4 +163,10 @@ body {
     .jumbotron {
         border-bottom: 0;
     }
+}
+
+@media screen and (max-width: 991px) {
+  .container{
+    margin-top: 20px;
+  }
 }

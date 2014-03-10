@@ -1,8 +1,8 @@
 <div class="header row">
   <div class="col-xs-10 col-xs-offset-1 clearfix">
-    <ul class="nav nav-tabs pull-right" ng-controller="HeaderCtrl">
-      <li class="ng-cloak" ng-repeat="item in menuItems" ng-class="{active: isActive(item.location)}"><a ng-href="#{{item.location}}">{{item.name}}</a></li>
+    <h3 class="pull-left">Restaurminator <small>I'll be back</small></h3>
+    <ul class="ng-cloak nav nav-tabs pull-right" ng-controller="HeaderCtrl">
+      <li ng-repeat="item in menuItems" ng-class="{active: isActive(item.location), retick: true}"><a ng-href="{{itemLocation(item)}}" ng-click="item.callback()">{{item.name}}</a></li>
     </ul>
-    <h3>Reterminator <small>I'll be back</small></h3>
   </div>
 </div>
