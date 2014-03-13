@@ -12,9 +12,10 @@ describe('Directive: passwordVerify', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<password-verify></password-verify>');
+  it('should be valid if the passwords match', inject(function ($compile) {
+    scope.password = 'test';
+    element = angular.element('<input password-verify="password" ng-model="confirm" value="test">');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the passwordVerify directive');
+    expect(element.$valid).toBe(true);
   }));
 });

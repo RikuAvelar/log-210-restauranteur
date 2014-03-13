@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <input ng-required="isRequired('name')" ng-disabled="isDisabled('name')" type="text" name="name" ng-model="user.name" class="form-control" placeholder="Name">
+                  <input ng-required="true" type="text" name="name" ng-model="user.name" class="form-control" placeholder="Name">
                 </div>
               </div>
             </div>
@@ -15,13 +15,13 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input ng-required="isRequired('username')" ng-disabled="isDisabled('username')" type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username">
+                  <input ng-required="true" type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <!-- Input type can't be date : not enough cohesion between browser behaviors -->
-                  <input type="text" ng-required="isRequired('birthDate')" ng-disabled="isDisabled('birthDate')" class="form-control" ng-model="user.birthDate" datepicker-popup="yyyy-MM-dd" datepicker-options="{'show-weeks': false}" show-button-bar="false" placeholder="Date of Birth YYYY-MM-DD">
+                  <input type="text" ng-required="true" class="form-control" ng-model="user.birthDate" datepicker-popup="yyyy-MM-dd" datepicker-options="{'show-weeks': false}" show-button-bar="false" placeholder="Date of Birth YYYY-MM-DD">
                 </div>
               </div>
             </div>
@@ -29,37 +29,20 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <input ng-required="isRequired('telephone')" ng-disabled="isDisabled('telephone')" type="telephone" name="telephone" ng-model="user.telephone" class="form-control" placeholder="Telephone Number">
+                  <input type="tel" ng-required="true" name="telephone" ng-model="user.telephone" class="form-control" placeholder="Telephone Number">
                 </div>
               </div>
             </div>
-
-            <div class="row" ng-hide="editForm">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <input ng-required="isRequired('password')" ng-disabled="isDisabled('password')" type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password">
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <input ng-required="isRequired('passwordConfirmation')" ng-disabled="isDisabled('passwordConfirmation')" type="password" name="password_confirmation" ng-model="user.passwordConfirmation" password-verify="user.password" class="form-control" placeholder="Confirm Password">
-                </div>
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset ng-hide="!editForm">
-            <legend>Change Password</legend>
 
             <div class="row">
               <div class="col-xs-6">
                 <div class="form-group">
-                  <input type="password" ng-required="isRequired('newPassword')" ng-disabled="isDisabled('newPassword')" type="newPassword" name="password" ng-model="user.newPassword" class="form-control" placeholder="[Unchanged]">
+                  <input ng-required="true" type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password">
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="form-group">
-                  <input ng-required="isRequired('newPasswordConfirmation')" ng-disabled="isDisabled('newPasswordConfirmation')" type="password" name="password_confirmation" ng-model="user.newPasswordConfirmation" password-verify="user.newPassword" class="form-control" placeholder="Confirm Password">
+                  <input ng-required="true" type="password" name="password_confirmation" ng-model="user.passwordConfirmation" password-verify="user.password" class="form-control" placeholder="Confirm Password">
                 </div>
               </div>
             </div>
@@ -67,14 +50,6 @@
 
           <fieldset>
             <legend>Address</legend>
-
-            <div class="row" ng-hide="!editForm">
-              <div class="col-xs-12">
-                <div class="form-group">
-                  <select ng-model="user.address" class="form-control" ng-options="fullAddress(a) for a in addresses" name="currentAddress"></select>
-                </div>
-              </div>
-            </div>
 
             <div class="row">
               <div ng-class="{'col-xs-12': !editForm, 'col-xs-9': editForm}">
@@ -119,6 +94,6 @@
             </div>
 
           </fieldset>
-          <button type="submit" ng-disabled="!userForm.$valid" tooltip="{{submitTooltip()}}" class="btn btn-info btn-block">{{submitValue}}</button>
+          <button type="submit" ng-disabled="!userForm.$valid" tooltip="{{submitTooltip()}}" class="btn btn-info btn-block">Register</button>
 
         </form>

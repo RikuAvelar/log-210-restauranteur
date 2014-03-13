@@ -23,7 +23,7 @@ angular.module('clientApp')
       switch(user.type) {
         case 'client':
           $scope.menuItems = [{
-            location: '/order',
+            location: '/orderUp',
             name: 'Place Order'
           }, {
             location: '/account',

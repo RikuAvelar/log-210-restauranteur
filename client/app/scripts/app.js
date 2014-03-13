@@ -18,9 +18,6 @@ angular.module('clientApp', [
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
-      .when('/logout', {
-        controller: 'LogoutCtrl'
-      })
       .when('/main', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
