@@ -1,32 +1,64 @@
-== README
+= README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Avant de commencer, vous allez avoir besoin des dépendences suivantes:
 
-Things you may want to cover:
+* Ruby - Language principale serveur
+* Rails - Serveur Ruby (gem install rails)
+* Git - Permet l'utilisation du SCM (N'oublie pas de l'ajouter à ton Path, il est nécessaire pour Bower)
+* Node.JS - Permet l'utilisation des outils de dev (http://nodejs.org/)
+* NPM - Système de modules Node.JS (Viens avec Node.JS)
+* Bower* - Permet le téléchargment des fichiers web ( npm install -g bower )
 
-* Ruby version
-`ruby ~ 1.9`
-* System dependencies
-`node >= 10.20`
-`grunt-cli >= 0.1.9`
-`bower >= 1.2.8`
-`yeoman >= 1.1.2`
-`generator-angular >= 0.7.1`
-* Configuration
+Cela s'agit des dépendences minimales afin d'au moins avoir les fichiers nécessaire au site web. Afin de pouvoir mieux Développer côté web, les 
 
-* Database creation
+* Grunt - Système de Tâches Node.JS, facilite le dev web (npm install -g grunt-cli)
+* Rake - Système de Tâches Ruby, facilite (éventuellement... peut-être) le dev serveur
+* Yeoman - Système de Scaffolding (génération de fichiers) pour le web. (npm install -g yeoman)
+* Angular Generator - Template Yeoman pour Angular.JS (npm install -g generator-angular)
 
-* Database initialization
+-----------------------
 
-* How to run the test suite
+Si vous voulez simplifier l'utilisation de Git, je vous suggère Github for Windows (si vous utilisez Windows) - il est très simple à utiliser, et s'intègre bien avec le site. (Vous aurez quand même à installer git séparément pour Bower, mais il n'est pas nécessaire pour GFW)
+Je peux vous donner un tutoriel un peu plus profond de git au besoin, mais l'utilisation à son plus simple s'agit de:
 
-* Services (job queues, cache servers, search engines, etc.)
+- Pull : Télécharge la version la plus récente
+- Commit : Sauvegarde les changements avec un message
+- Push : Envoyer les changements
 
-* Deployment instructions
+Github for Windows va combiner le pull et le push en un avec "Sync" (son équivalent s'agit de "git pull --rebase & git push")
 
-* ...
+Je vous suggère *fortement* de travailler sur vos propres branches. La meilleure pratique s'agit de créer une branche pour chaque feature que vous travailler dessus, mais on peut survivre avec juste une branche chacun. La raison s'agit du fait qu'il est préférable que quelqu'un d'habitué s'occupe des merge (lorsque 2 personnes font des changements de façon asynchrones, ils doivent faire un merge de leurs changements)
 
+Pour créer une branche, soit que vous utiliser le GUI et Github For Windows, ou roulez les commandes suivantes:
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+1. git checkout -b NOM_DE_LA_BRANCHE
+2. git push -u origin NOM_DE_LA_BRANCHE
+
+Cela va placer votre branche sur Github, ce qui permettera aux autres d'y accéder.
+
+Si vous avez plus de questions sur Git, n'hésitez pas à me contacter.
+
+------------------------
+
+Pour le dev Ruby, je n'ai pas assez d'expérience afin de vous dire comment travailler avec, mais je peux cependant vous donner toute l'aide nécessaire pour le dev web.
+
+== Avant tout
+
+1. Ouvrir une console dans /client
+2. Rouler ``npm install``
+
+Ceci va télécharger tous les dépendences node.js nécessaire au projet, dont les modules de Grunt nécessaires.
+
+== Partir le serveur
+
+1. Ouvrir une console dans /client
+2. Rouler ``grunt serve``
+
+Cette tâche va télécharger les dépendences JS et CSS, ainsi que partir un serveur autoreload sur le port 9000. Lorsqu'il détecte un fichier modifié, les fichiers sont re-lintés, les tests sont repartis et la page web est reloadé.
+Si le serveur Ruby est parti en même temps, un proxy est créé afin de l'accéder par le URL "/api"
+
+== Build
+
+1. Ouvrir une console dans /client
+2. Rouler ``grunt build``
+3. Le projet sera buildé et mis dans /public
