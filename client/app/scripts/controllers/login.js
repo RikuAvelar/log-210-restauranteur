@@ -22,9 +22,4 @@ angular.module('clientApp')
     $scope.clearError = function(which) {
       $scope.errors = _.without($scope.errors, {which: which});
     };
-
-    if(AuthService.isLoggedIn()) {
-      $location.path('main');
-    }
-
   });

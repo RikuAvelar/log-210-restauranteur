@@ -1,20 +1,23 @@
 'use strict';
 
 angular.module('clientApp')
-  .factory('AuthService', function ($q, $location) {
+  .factory('AuthService', function ($q, $location, $window) {
     // Current fake things using localStorage
 
     var currentUser = {};
     var fetchedAuthData = false;
+    var authRoutes = ['/login', '/signup'];
 
     var dbo = {
       get: function(){
         var deferred = $q.defer();
+        console.log('Called GET');
         deferred.resolve(JSON.parse(localStorage.getItem('mock-userdata') || '{}'));
         return deferred.promise;
       },
       set: function(data){
         var deferred = $q.defer();
+        console.log('Called SET');
         localStorage.setItem('mock-userdata', JSON.stringify(data));
         deferred.resolve(null);
         return deferred.promise;
@@ -23,19 +26,22 @@ angular.module('clientApp')
 
     // Public API here
     return {
-      isLoggedIn: function () {
+      isAuthenticated: function () {
         return !_.isUndefined(currentUser.id) && currentUser.id !== 0;
       },
       requireLogin: function() {
         var deferred = $q.defer();
         var that = this;
         this.getAuthData().then(function(){
-          if(!that.isLoggedIn()) {
+          if(!that.isAuthenticated()) {
             $location.path('login');
           }
           deferred.resolve();
         });
         return deferred.promise;
+      },
+      isAuthRoute: function(routeName) {
+        return _.indexOf(authRoutes, routeName) !== -1;
       },
       currentUser: function() {
         return currentUser;
@@ -55,15 +61,15 @@ angular.module('clientApp')
         }
         return deferred.promise;
       },
+      destroyToken: function(){
+
+      },
       _setUser: function(user) {
         // Prototype Function for view example
         var deferred = $q.defer();
         currentUser = user;
         dbo.set(currentUser).then(deferred.resolve);
         return deferred.promise;
-      },
-      fetchedAuthData: function() {
-        return fetchedAuthData;
       },
       logout: function(){
         var deferred = $q.defer();

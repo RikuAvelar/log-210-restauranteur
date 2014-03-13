@@ -5,7 +5,8 @@ angular.module('clientApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'ngAnimate'
+  'ngAnimate',
+  'ui.bootstrap'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -43,4 +44,22 @@ angular.module('clientApp', [
       .otherwise({
         templateUrl: 'views/404.html'
       });
+  })
+  .run(function($rootScope, AuthService, $route, $location, $q){
+    var authFetch = AuthService.getAuthData();
+    $rootScope.$on('$routeChangeStart', function(event, next, current){
+      $q.when(authFetch).then(function(){
+        if(AuthService.isAuthenticated()){
+          if(AuthService.isAuthRoute(next.originalPath)){
+            $route.reload();
+            $location.path('/');
+          }
+        } else {
+          if(!AuthService.isAuthRoute(next.originalPath)){
+            $route.reload();
+            $location.path('/login');
+          }
+        }
+      });
+    });
   });
