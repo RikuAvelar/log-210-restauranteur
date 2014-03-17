@@ -49,6 +49,12 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
   }
 }
 
+.top-return{
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+}
+
 [ng-click]{
   cursor:pointer;
 }

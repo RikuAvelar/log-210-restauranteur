@@ -38,6 +38,10 @@ angular.module('clientApp', [
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl'
       })
+      .when('/orderUp', {
+        templateUrl: 'views/clientorder.html',
+        controller: 'ClientOrderCtrl'
+      })
       .otherwise({
         templateUrl: 'views/404.html'
       });
