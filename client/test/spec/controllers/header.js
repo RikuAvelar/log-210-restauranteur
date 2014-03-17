@@ -58,7 +58,7 @@ describe('Controller: HeaderCtrl', function () {
       scope.$digest(); // Triggers the watch on AuthService.currentUser()
       expect(scope.menuItems.length).toBe(3);
       expect(scope.menuItems[0].location).toBe('/orders');
-      expect(scope.menuItems[1].location).toBe('/restaurateurs');
+      expect(scope.menuItems[1].location).toBe('/menus');
       expect(scope.menuItems[2].name).toBe('Logout'); //Logout doesn't use a route, but calls the Auth function
     });
 
@@ -83,7 +83,7 @@ describe('Controller: HeaderCtrl', function () {
 
       AuthServiceMock._setUser('entrepreneur');
       scope.$digest();
-      expect(scope.menuItems[1].name).toBe('Logout'); //Logout doesn't use a route, but calls the Auth function
+      expect(scope.menuItems[2].name).toBe('Logout'); //Logout doesn't use a route, but calls the Auth function
       scope.menuItems[1].callback();
       expect(AuthServiceMock.currentUser()).toEqual({});
 

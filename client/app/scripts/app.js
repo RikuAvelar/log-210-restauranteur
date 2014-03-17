@@ -54,6 +54,10 @@ angular.module('clientApp', [
         templateUrl: 'views/clientorder.html',
         controller: 'ClientOrderCtrl'
       })
+      .when('/orders/:id?', {
+        templateUrl: 'views/orders.html',
+        controller: 'OrdersCtrl'
+      })
       .otherwise({
         templateUrl: 'views/404.html'
       });

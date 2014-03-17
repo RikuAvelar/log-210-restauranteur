@@ -1,6 +1,6 @@
-$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+$icon-font-path: "/bower_components/bootstrap-sass-official/fonts/";
 
-@import 'sass-bootstrap/lib/bootstrap';
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/bootstrap';
 
 $activeColor: #428bca;
 
@@ -13,6 +13,11 @@ $activeColor: #428bca;
   -webkit-transition-delay: $delay; // Chrome
   transition-delay: $delay;
 }
+
+.underlined {
+  border-bottom: 1px solid #ddd;
+}
+
 .slide {
   @include animateAll();
   position: relative;
@@ -64,6 +69,10 @@ $activeColor: #428bca;
   &.ng-enter-active{
     top:0;
   }
+}
+
+.controls > button{
+  margin-bottom:0.5em;
 }
 
 .top-return{

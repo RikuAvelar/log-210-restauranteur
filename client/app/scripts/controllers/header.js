@@ -39,16 +39,20 @@ angular.module('clientApp')
         case 'entrepreneur':
           $scope.menuItems = [{
             location: '/restaurateurs',
-            name: 'Gérer Restaurateur'
+            name: 'Gérer Restaurateurs'
+          },{
+            location: '/restaurants',
+            name: 'Gérer Restaurants'
           }].concat(defaultMenuItems);
           break;
         case 'restaurateur':
           $scope.menuItems = [{
-            location: '/restaurateurs',
-            name: 'Gérer Restaurateur'
+            location: '/orders',
+            name: 'Prendre une Commande',
+            badge: 3
           },{
-            location: '/restaurants',
-            name: 'Gérer Restaurants'
+            location: '/menus',
+            name: 'Gérer Menus'
           }].concat(defaultMenuItems);
           break;
         default:
