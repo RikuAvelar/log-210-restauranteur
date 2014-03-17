@@ -1,0 +1,47 @@
+<a href="#/restaurateurs" class="btn"><span class="glyphicon glyphicon-chevron-left"></span> Return</a>
+
+<form role="form" name="userForm" ng-submit="register()">
+
+  <fieldset>
+
+    <legend>General Info</legend>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <input type="text" name="name" class="form-control" ng-value="user.name" placeholder="Name">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <input type="text" name="username" ng-value="user.username" class="form-control" placeholder="Username">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <input type="password" type="newPassword" name="password" ng-model="user.newPassword" class="form-control" placeholder="[Unchanged]">
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="form-group">
+          <input type="password" name="password_confirmation" ng-model="user.newPasswordConfirmation" password-verify="user.newPassword" class="form-control" placeholder="Confirm Password">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Restaurants</legend>
+
+    <div class="list-group">
+      <label ng-repeat="resto in [true, false, true] track by $index" class="list-group-item clickable" ng-class="{'selected': resto}">Restostop <input ng-model="resto" type="checkbox" class="pull-right"></label>
+    </div>
+
+  </fieldset>
+
+  <button type="submit" ng-disabled="!userForm.$valid" tooltip="{{submitTooltip()}}" class="btn btn-info btn-block">Save</button>
+
+</form>

@@ -2,6 +2,8 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
+$activeColor: #428bca;
+
 /* Animation */
 @mixin animateAll($speed: 300ms){
   -webkit-transition: $speed linear all; // Chrome
@@ -29,6 +31,21 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
   &.ng-leave-active{
     left:-166%;
   }
+  .reverse + &.ng-enter{
+    left:-100%;
+    position:absolute;
+    top:0;
+  }
+  .reverse + &.ng-enter-active{
+    left:0%;
+  }
+
+  &.ng-leave.reverse{
+    left:0%;
+  }
+  &.ng-leave-active.reverse{
+    left:166%;
+  }
 }
 
 .retick{
@@ -55,8 +72,16 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
   right: 1em;
 }
 
-[ng-click]{
+[ng-click], .clickable{
   cursor:pointer;
+}
+
+.list-group-item.selected,
+.list-group-item.selected:hover,
+.list-group-item.selected:focus{
+  color: #fff;
+  background-color: $activeColor;
+  border-color: $activeColor;
 }
 
 /* End Animation */

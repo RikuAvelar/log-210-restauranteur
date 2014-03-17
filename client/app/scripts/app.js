@@ -30,8 +30,12 @@ angular.module('clientApp', [
         templateUrl: 'views/delivery.html',
         controller: 'DeliveryCtrl'
       })
+      .when('/restaurateurs', {
+        templateUrl: 'views/restaurateursList.html',
+        controller: 'RestaurateursCtrl'
+      })
       .when('/restaurateurs/:id', {
-        templateUrl: 'views/restaurateurs.html',
+        templateUrl: 'views/restaurateur.html',
         controller: 'RestaurateursCtrl'
       })
       .when('/account', {
