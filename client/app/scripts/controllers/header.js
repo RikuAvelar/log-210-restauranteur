@@ -42,6 +42,15 @@ angular.module('clientApp')
             name: 'Gérer Restaurateur'
           }].concat(defaultMenuItems);
           break;
+        case 'restaurateur':
+          $scope.menuItems = [{
+            location: '/restaurateurs',
+            name: 'Gérer Restaurateur'
+          },{
+            location: '/restaurants',
+            name: 'Gérer Restaurants'
+          }].concat(defaultMenuItems);
+          break;
         default:
           $scope.menuItems = [{
             location: '/login',

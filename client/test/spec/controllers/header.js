@@ -50,7 +50,8 @@ describe('Controller: HeaderCtrl', function () {
       scope.$digest(); // Triggers the watch on AuthService.currentUser()
       expect(scope.menuItems.length).toBe(2);
       expect(scope.menuItems[0].location).toBe('/restaurateurs');
-      expect(scope.menuItems[1].name).toBe('Logout'); //Logout doesn't use a route, but calls the Auth function
+      expect(scope.menuItems[2].location).toBe('/restaurants');
+      expect(scope.menuItems[3].name).toBe('Logout'); //Logout doesn't use a route, but calls the Auth function
 
       // Entrepreneur
       AuthServiceMock._setUser('restaurateur');
@@ -97,6 +98,10 @@ describe('Controller: HeaderCtrl', function () {
 
     location.path('');
     expect(scope.isActive('/')).toBe(true);
+
+    // Sub-paths counted as root
+    location.path('/restaurant/1');
+    expect(scope.isActive('/restaurant')).toBe(true);
   });
 
   it('should be able to correctly interpret the href from the menu items', function(){

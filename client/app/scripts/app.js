@@ -38,6 +38,14 @@ angular.module('clientApp', [
         templateUrl: 'views/restaurateur.html',
         controller: 'RestaurateursCtrl'
       })
+      .when('/restaurants', {
+        templateUrl: 'views/restaurantList.html',
+        controller: 'RestaurantCtrl'
+      })
+      .when('/restaurants/:id', {
+        templateUrl: 'views/restaurant.html',
+        controller: 'RestaurantCtrl'
+      })
       .when('/account', {
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl'
