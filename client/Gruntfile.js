@@ -9,6 +9,8 @@
 
 module.exports = function (grunt) {
 
+  var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -65,6 +67,13 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
+      proxies: [{
+        context: '/api',
+        host: 'localhost',
+        port: 3000,
+        https: false,
+        changeOrigin: false
+      }],
       livereload: {
         options: {
           open: true,
@@ -74,13 +83,6 @@ module.exports = function (grunt) {
           ]
         }
       },
-      proxies: [{
-        context: '/api/v1',
-        host: 'localhost',
-        port: 3000,
-        https: false,
-        changeOrigin: false
-      }],
       test: {
         options: {
           port: 9001,
@@ -312,7 +314,8 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'compass:server'
+        'compass:server',
+        'configureProxies:server'
       ],
       test: [
         'compass'
