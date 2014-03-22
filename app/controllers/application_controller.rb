@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
 
   # Allow CORS (Cross Origin Resource Sharing) to communicate between Grunt and Rails (for dev)
   before_filter :cors_set_access_control_headers
