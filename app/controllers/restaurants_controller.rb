@@ -2,10 +2,10 @@ class RestaurantsController < ApplicationController
   def create
 
     # RDCU - CU02 - Demarrer Ajout Restaurant
-    @resto = Restaurant.create(:name => params[:name])
+    @resto = Restaurant.new(:name => params[:name])
 
     # RDCU - CU02 - Entrer Information
-    @address = Address.create(address_params)
+    @address = Address.new(address_params)
     @resto.address = @address
 
     # RDCU - CU02 - Assigner Restaurateur
