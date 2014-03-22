@@ -1,19 +1,23 @@
 class RestaurateursController < ApplicationController
   respond_to :json
   def create
-    @res = Restaurateur.create(:name => params[:name], :email => params[:email], :password => params[:password])
 
-    @address = Address.create(address_params)
-    @res.address = @address
+    # RDCU - CU01 : Demarrer Ajout Restaurateur (API)
+
+    @res = Restaurateur.new(:name => params[:name], :email => params[:email], :password => params[:password])
+
+    # RDCU - CU01 : Entrer Information
 
     if not restaurants_params.empty?
       restaurants_params.each do |restoId|
-        @resto = Restaurant.find_by_id(resto)
+        @resto = Restaurant.find_by_id(restoId)
         if @resto
           @res.restaurants.push(@resto)
         end
       end
     end
+
+    # Response
 
     respond_to do |format|
       if @res.save
@@ -37,7 +41,7 @@ class RestaurateursController < ApplicationController
   end
 
   def restaurants_params
-    if params.key(:restaurants)
+    if params.has_key?(:restaurants)
       params.require(:restaurants)
     else
       return []

@@ -5,5 +5,4 @@ class Restaurateur < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :restaurants
-  has_one :address, :as => :located
 end
