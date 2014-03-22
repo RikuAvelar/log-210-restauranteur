@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
-    @client = Client.new(user_params)
+    @client = Client.new(user_params_for_create)
 
     # RDCU - CU03 : Entrer Information
     all_address_params.each do |addrParam|
@@ -21,10 +21,27 @@ class ClientsController < ApplicationController
     end
   end
 
+  def update
+    @client = Client.find_by_id(params[:id])
+    respond_to do |format|
+      if @client.update_attributes(user_params_for_update)
+        format.json { head :no_content, status: :ok }
+        format.xml { head :no_content, status: :ok }
+      else
+        format.json { render json: @client.errors, status: :unprocessable_entity }
+        format.xml { render xml: @client.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
-  def user_params
-    params.require(:user).permit(:name, :password, :email, :birth_date)
+  def user_params_for_create
+    params.require(:user).permit(:name, :password, :email, :birth_date, :telephone)
+  end
+
+  def user_params_for_update
+    params.require(:user).permit(:password, :telephone)
   end
 
   def all_address_params
