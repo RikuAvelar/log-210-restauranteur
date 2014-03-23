@@ -1,4 +1,5 @@
 Restauranteur::Application.routes.draw do
+  devise_for :users
   devise_for :clients
   devise_for :entrepreneurs
   devise_for :restaurateurs
