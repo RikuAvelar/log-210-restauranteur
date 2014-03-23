@@ -80,7 +80,7 @@ class ClientsController < ApplicationController
   end
 
   def all_address_params
-    params.require(:user).require(:addresses)
+    params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :is_default])[:addresses]
   end
 
   def single_address_params(address)
