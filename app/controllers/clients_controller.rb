@@ -1,7 +1,8 @@
 class ClientsController < ApplicationController
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
-    @client = Client.new(user_params_for_create)
+    @client = User.new()
+    @account = Client.new(user_params_for_create)
 
     # RDCU - CU03 : Entrer Information
     all_address_params.each do |addrParam|
@@ -36,12 +37,20 @@ class ClientsController < ApplicationController
 
   private
 
-  def user_params_for_create
-    params.require(:user).permit(:name, :password, :email, :birth_date, :telephone)
+  def user_params
+    params.permit(:email, :password, :confirm_password)
   end
 
-  def user_params_for_update
-    params.require(:user).permit(:password, :telephone)
+  def client_params
+    params.require(:user).permit(:name, :birth_date, :telephone)
+  end
+
+  def update_user_params
+    params.permit(:password, :confirm_password)
+  end
+
+  def update_client_params
+    params.require(:user).permit(:telephone)
   end
 
   def all_address_params

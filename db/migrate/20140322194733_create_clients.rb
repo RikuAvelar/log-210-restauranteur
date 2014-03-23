@@ -1,4 +1,4 @@
-class DeviseCreateClients < ActiveRecord::Migration
+class CreateClients < ActiveRecord::Migration
   def change
     create_table(:clients) do |t|
 
@@ -6,7 +6,8 @@ class DeviseCreateClients < ActiveRecord::Migration
       t.datetime :birth_date
       t.string :telephone
 
-      t.timestamps
+      ## Not required (in User)
+      #t.timestamps
     end
   end
 end
