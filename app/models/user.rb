@@ -5,4 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_one :account, polymorphic: true
+
+  def is_account_type?(account_type)
+    self.account_type == account_type
+  end
 end

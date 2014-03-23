@@ -1,13 +1,15 @@
 class ClientsController < ApplicationController
+
+  #before_filter :authenticate_user!
+
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
-    @client = User.new()
-    @account = Client.new(user_params_for_create)
+    @client = User.new(all_user_params)
 
     # RDCU - CU03 : Entrer Information
-    all_address_params.each do |addrParam|
-      @client.addresses.new(single_address_params addrParam)
-    end
+    @account = Client.new(client_params)
+    @client.account = @account
+    update_addresses @client
 
     # Response
 
@@ -23,9 +25,12 @@ class ClientsController < ApplicationController
   end
 
   def update
-    @client = Client.find_by_id(params[:id])
+    @client = User.find_where({id: params[:id], account_type: 'Client'})
+    @client_update = @client.account.update(update_client_params)
+    @user_update = @client.update(user_params)
+    @addr_update = update_addresses @client
     respond_to do |format|
-      if @client.update_attributes(user_params_for_update)
+      if @client.save
         format.json { head :no_content, status: :ok }
         format.xml { head :no_content, status: :ok }
       else
@@ -37,8 +42,29 @@ class ClientsController < ApplicationController
 
   private
 
+  def update_addresses(client)
+    all_address_params.each do |addrParam|
+      if not addrParam.has_key? :id
+        client.account.addresses.new(single_address_params addrParam)
+      else
+        @addr = Address.find(located_id: client.id, located_type: 'Client', id: addrParam[:id])
+        if not @addr
+          client.account.new(single_address_params addrParam)
+        elsif addrParam.has_key? :destroy && addrParam[:destroy]
+          @addr.destroy
+        else
+          @addr.update(single_address_params addrParam)
+        end
+      end
+    end
+  end
+
   def user_params
-    params.permit(:email, :password, :confirm_password)
+    params.permit(:password, :password_confirmation)
+  end
+
+  def all_user_params
+    params.permit(:email).merge(user_params)
   end
 
   def client_params
@@ -46,7 +72,7 @@ class ClientsController < ApplicationController
   end
 
   def update_user_params
-    params.permit(:password, :confirm_password)
+    params.permit(:password, :password_confirmation)
   end
 
   def update_client_params

@@ -2,7 +2,7 @@ class RestaurantsController < ApplicationController
   def create
 
     # RDCU - CU02 - Demarrer Ajout Restaurant
-    @resto = Restaurant.new(:name => params[:name])
+    @resto = Restaurant.new(restaurant_params)
 
     # RDCU - CU02 - Entrer Information
     @address = Address.new(address_params)
@@ -31,6 +31,10 @@ class RestaurantsController < ApplicationController
 
 
   private
+
+  def restaurant_params
+    params.permit(:name)
+  end
 
   def address_params
     params.require(:address).permit(:street_address, :country, :city, :province)

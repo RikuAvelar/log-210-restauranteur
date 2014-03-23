@@ -4,9 +4,12 @@ class RestaurateursController < ApplicationController
 
     # RDCU - CU01 : Demarrer Ajout Restaurateur (API)
 
-    @res = Restaurateur.new(:name => params[:name], :email => params[:email], :password => params[:password])
+    @res = User.new(all_user_params)
 
     # RDCU - CU01 : Entrer Information
+
+    @account = Restaurateur.new(restaurateur_params)
+    @res.account = @account
 
     if not restaurants_params.empty?
       restaurants_params.each do |restoId|
@@ -36,13 +39,21 @@ class RestaurateursController < ApplicationController
 
   private
 
-  def address_params
-    params.require(:address).permit(:street_address, :country, :city, :province)
+  def user_params
+    params.permit(:password, :password_confirmation)
+  end
+
+  def all_user_params
+    params.permit(:email).merge(user_params)
+  end
+
+  def restaurateur_params
+    params.require(:user).permit(:name)
   end
 
   def restaurants_params
     if params.has_key?(:restaurants)
-      params.require(:restaurants)
+      params.require(:user).require(:restaurants)
     else
       return []
     end
