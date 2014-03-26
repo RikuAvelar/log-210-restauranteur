@@ -32,7 +32,7 @@ class TokensController < ApplicationController
   end
 
   def login_success(token, user)
-    render :json => { :token => token, :user => {:id => user.id, :type => user.account_type} },  :success => true
+    render :json => { :token => token, :user => {:id => user.id, :type => user.account_type, :name => user.account.name} },  :success => true
   end
 
   def password_confirmed
