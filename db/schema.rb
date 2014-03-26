@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322194733) do
+ActiveRecord::Schema.define(version: 20140323223524) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_address"
@@ -26,44 +26,14 @@ ActiveRecord::Schema.define(version: 20140322194733) do
   end
 
   create_table "clients", force: true do |t|
-    t.string   "email"
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
     t.string   "name"
     t.datetime "birth_date"
     t.string   "telephone"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
-
-  add_index "clients", ["email"], name: "index_clients_on_email", unique: true
-  add_index "clients", ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true
 
   create_table "entrepreneurs", force: true do |t|
-    t.string   "email"
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name"
   end
-
-  add_index "entrepreneurs", ["email"], name: "index_entrepreneurs_on_email", unique: true
-  add_index "entrepreneurs", ["reset_password_token"], name: "index_entrepreneurs_on_reset_password_token", unique: true
 
   create_table "restaurants", force: true do |t|
     t.string   "name"
@@ -73,7 +43,11 @@ ActiveRecord::Schema.define(version: 20140322194733) do
   end
 
   create_table "restaurateurs", force: true do |t|
-    t.string   "email"
+    t.string "name"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -83,12 +57,15 @@ ActiveRecord::Schema.define(version: 20140322194733) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "name"
+    t.integer  "account_id"
+    t.string   "account_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "authentication_token"
   end
 
-  add_index "restaurateurs", ["email"], name: "index_restaurateurs_on_email", unique: true
-  add_index "restaurateurs", ["reset_password_token"], name: "index_restaurateurs_on_reset_password_token", unique: true
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
