@@ -6,12 +6,11 @@ angular.module('clientApp')
 
     $scope.authenticate = function() {
       $scope.errors = [];
-      AuthService.authenticate({username: $scope.username, password: $scope.password}).then(function(error){
-        if(error) {
-          $scope.errors.push(error);
-        } else {
-          $location.path('main');
-        }
+      AuthService.authenticate($scope.login).then(function(){
+        $location.path('main');
+      }, function(){
+        $scope.errors.push({which: 'email'});
+        $scope.errors.push({which: 'password'});
       });
     };
 
