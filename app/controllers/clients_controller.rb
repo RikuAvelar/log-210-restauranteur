@@ -1,12 +1,15 @@
 class ClientsController < ApplicationController
+  respond_to :json
+  before_filter :require_auth!
+
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
-    @client = Client.new(user_params_for_create)
+    @client = User.new(all_user_params)
 
     # RDCU - CU03 : Entrer Information
-    all_address_params.each do |addrParam|
-      @client.addresses.new(single_address_params addrParam)
-    end
+    @account = Client.new(client_params)
+    @client.account = @account
+    update_addresses @client
 
     # Response
 
@@ -22,9 +25,13 @@ class ClientsController < ApplicationController
   end
 
   def update
-    @client = Client.find_by_id(params[:id])
+    @client = User.where({id: params[:id], account_type: 'Client'}).first
+    return bad_request unless @client.present?
+    @client_update = @client.account.update(update_client_params)
+    @user_update = @client.update(user_params)
+    @addr_update = update_addresses @client
     respond_to do |format|
-      if @client.update_attributes(user_params_for_update)
+      if @client.save
         format.json { head :no_content, status: :ok }
         format.xml { head :no_content, status: :ok }
       else
@@ -36,16 +43,60 @@ class ClientsController < ApplicationController
 
   private
 
-  def user_params_for_create
-    params.require(:user).permit(:name, :password, :email, :birth_date, :telephone)
+  def bad_request
+    respond_to do |format|
+      format.json { render json: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
+      format.xml { render xml: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
+    end
   end
 
-  def user_params_for_update
-    params.require(:user).permit(:password, :telephone)
+  def update_addresses(client)
+    all_address_params.each do |addrParam|
+      if not addrParam.has_key? :id
+        client.account.addresses.new(single_address_params addrParam)
+      else
+        @addr = Address.find(located_id: client.id, located_type: 'Client', id: addrParam[:id])
+        if not @addr
+          client.account.new(single_address_params addrParam)
+        elsif addrParam.has_key? :destroy && addrParam[:destroy]
+          @addr.destroy
+        else
+          @addr.update(single_address_params addrParam)
+        end
+      end
+    end
+  end
+
+  def user_params
+    params.permit(:password, :password_confirmation)
+  end
+
+  def all_user_params
+    params.permit(:email).merge(user_params)
+  end
+
+  def client_params
+    params.require(:user).permit(:name, :birth_date, :telephone)
+  end
+
+  def update_user_params
+    params.permit(:password, :password_confirmation)
+  end
+
+  def update_client_params
+    if params.has_key? :user
+      params.require(:user).permit(:telephone)
+    else
+      return []
+    end
   end
 
   def all_address_params
-    params.require(:user).require(:addresses)
+    if params.has_key? :user
+      params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :is_default])[:addresses]
+    else
+      return []
+    end
   end
 
   def single_address_params(address)

@@ -1,8 +1,8 @@
 class Client < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  ## Not actually valid, since polymorphism in Rails works the other way around.
+  ## However, the line below is left here as to show the intentions
+  # belongs_to :user, :as => :account
+  has_one :user, :as => :account
 
   has_many :addresses, :as => :located
 end
