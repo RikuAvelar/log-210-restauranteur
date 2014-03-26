@@ -6,9 +6,12 @@ angular.module('clientApp', [
   'ngSanitize',
   'ngRoute',
   'ngAnimate',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'growlNotifications'
 ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
+    $httpProvider.interceptors.push('AuthIntercept');
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -62,7 +65,8 @@ angular.module('clientApp', [
         templateUrl: 'views/404.html'
       });
   })
-  .run(function($rootScope, AuthService, $route, $location, $q){
+  .run(function($rootScope, AuthService, $route, $location, $q, $animate){
+    $animate.enabled(true);
     var authFetch = AuthService.getAuthData();
     $rootScope.$on('$routeChangeStart', function(event, next, current){
       $q.when(authFetch).then(function(){
