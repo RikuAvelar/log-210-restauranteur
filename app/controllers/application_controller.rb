@@ -26,18 +26,32 @@ class ApplicationController < ActionController::Base
     token_secret = ENV['SECRET_TOKEN'] || 'SECRET'
     user_auth_token = request.headers[:Authorization].presence
     user_token = user_auth_token && JWT.decode(user_auth_token.to_s, token_secret)
-    user = user_token && User.find_by_id(user_token['id'])
-    if user # && Devise.secure_compare()
-      sign_in :user, user, store: false
-      @current_user = user
-      puts 'User Logged In'
+    # If there is no token, proceed as normal
+    if user_token
+      return expired_token_response if is_token_expired? user_token
+      user = User.find_by_id(user_token['id']) # ID can't be correlated to a symbol
+      if user
+        sign_in :user, user, store: false
+        @current_user = user
+      end
     end
+  end
+
+  def is_token_expired?(user_token)
+    Time.parse(user_token['expires']) < Time.now
   end
 
   def require_auth!(account_type = 'all')
     return unauthorized_response unless is_logged_in
     if not account_type =='all'
       return forbidden_response unless current_user.is_account_type? account_type
+    end
+  end
+
+  def expired_token_response
+    respond_to do |format|
+      format.json { render json: { :errors => ["Token has expired"] },  :success => false, :status => :unauthorized}
+      format.xml { render xml: { :errors => ["Token has expired"] },  :success => false, :status => :unauthorized}
     end
   end
 
