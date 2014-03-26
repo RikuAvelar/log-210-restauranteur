@@ -57,10 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def expired_token_response
-    respond_to do |format|
-      format.json { render json: { :errors => [{:type => "ExpiredTokenError", :message => "Token has expired"}] },  :success => false, :status => :bad_request}
-      format.xml { render xml: { :errors => [{:type => "ExpiredTokenError", :message => "Token has expired"}] },  :success => false, :status => :bad_request}
-    end
+    render :json => { :errors => [{:type => "ExpiredTokenError", :message => "Token has expired"}] },  :success => false, :status => :bad_request
   end
 
   def unauthorized_response
@@ -68,17 +65,11 @@ class ApplicationController < ActionController::Base
     if @invalid_token
       json_response[:errors].push({:type => "InvalidToken", :message => "This token is not a valid token"})
     end
-    respond_to do |format|
-      format.json { render json: json_response,  :success => false, :status => :unauthorized}
-      format.xml { render xml: json_response,  :success => false, :status => :unauthorized}
-    end
+    render :json => json_response, :success => false, :status => :unauthorized
   end
 
   def forbidden_response
-    respond_to do |format|
-      format.json { render json: { :errors => [{:type => "ForbiddenError", :message => "You are not authorized to view perform this action."}] },  :success => false, :status => :forbidden}
-      format.xml { render xml: { :errors => ["You are not authorized to view this"] },  :success => false, :status => :forbidden}
-    end
+    render :json => { :errors => [{:type => "ForbiddenError", :message => "You are not authorized to view perform this action."}] },  :success => false, :status => :forbidden
   end
 
   def current_user
