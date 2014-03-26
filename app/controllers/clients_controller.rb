@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
-
-  #before_filter :authenticate_user!
+  respond_to :json
+  before_filter :require_auth!
 
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
@@ -25,7 +25,8 @@ class ClientsController < ApplicationController
   end
 
   def update
-    @client = User.find_where({id: params[:id], account_type: 'Client'})
+    @client = User.where({id: params[:id], account_type: 'Client'}).first
+    return bad_request unless @client.present?
     @client_update = @client.account.update(update_client_params)
     @user_update = @client.update(user_params)
     @addr_update = update_addresses @client
@@ -41,6 +42,13 @@ class ClientsController < ApplicationController
   end
 
   private
+
+  def bad_request
+    respond_to do |format|
+      format.json { render json: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
+      format.xml { render xml: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
+    end
+  end
 
   def update_addresses(client)
     all_address_params.each do |addrParam|
@@ -76,11 +84,19 @@ class ClientsController < ApplicationController
   end
 
   def update_client_params
-    params.require(:user).permit(:telephone)
+    if params.has_key? :user
+      params.require(:user).permit(:telephone)
+    else
+      return []
+    end
   end
 
   def all_address_params
-    params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :is_default])[:addresses]
+    if params.has_key? :user
+      params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :is_default])[:addresses]
+    else
+      return []
+    end
   end
 
   def single_address_params(address)

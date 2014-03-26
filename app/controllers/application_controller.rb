@@ -3,6 +3,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
+  before_filter :set_up_user_vars
+  before_filter :authenticate_user_from_token!
+
+  #before_filter :authenticate_user!
+
   # Allow CORS (Cross Origin Resource Sharing) to communicate between Grunt and Rails (for dev)
   before_filter :cors_set_access_control_headers
   def cors_set_access_control_headers
@@ -10,5 +15,53 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type'
     headers['Access-Control-Max-Age'] = "1728000"
+  end
+
+  def set_up_user_vars
+    @current_user = nil
+    @user_token = nil
+  end
+
+  def authenticate_user_from_token!
+    token_secret = ENV['SECRET_TOKEN'] || 'SECRET'
+    user_auth_token = request.headers[:Authorization].presence
+    user_token = user_auth_token && JWT.decode(user_auth_token.to_s, token_secret)
+    user = user_token && User.find_by_id(user_token['id'])
+    if user # && Devise.secure_compare()
+      sign_in :user, user, store: false
+      @current_user = user
+      puts 'User Logged In'
+    end
+  end
+
+  def require_auth!(account_type = 'all')
+    return unauthorized_response unless is_logged_in
+    if not account_type =='all'
+      return forbidden_response unless current_user.is_account_type? account_type
+    end
+  end
+
+  def unauthorized_response
+    respond_to do |format|
+      format.json { render json: { :errors => ["Requires authentication"] },  :success => false, :status => :unauthorized}
+      format.xml { render xml: { :errors => ["Requires authentication"] },  :success => false, :status => :unauthorized}
+    end
+  end
+
+  def forbidden_response
+    respond_to do |format|
+      format.json { render json: { :errors => ["You are not authorized to view this"] },  :success => false, :status => :forbidden}
+      format.xml { render xml: { :errors => ["You are not authorized to view this"] },  :success => false, :status => :forbidden}
+    end
+  end
+
+  def current_user
+    if @current_user.present
+      @current_user
+    end
+  end
+
+  def is_logged_in
+    return @current_user != nil
   end
 end

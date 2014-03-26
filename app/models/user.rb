@@ -10,4 +10,9 @@ class User < ActiveRecord::Base
   def is_account_type?(account_type)
     self.account_type == account_type
   end
+
+  def generate_auth_token
+    token_secret = ENV['SECRET_TOKEN'] || 'SECRET'
+    JWT.encode({id: self.id, email: self.email, type: self.account_type, issued: Time.now, expires: Time.now.in(2 * 60 * 60)}, token_secret)
+  end
 end
