@@ -6,7 +6,7 @@ class TokensController < ApplicationController
     # Creates a new token
     return bad_confirm unless password_confirmed
     user = User.find_by_email(user_params[:email])
-    if user.valid_password?(user_params[:password])
+    if user && user.valid_password?(user_params[:password])
       token = user.generate_auth_token
       login_success token, user
     else
@@ -44,15 +44,15 @@ class TokensController < ApplicationController
 
   def bad_confirm
     respond_to do |format|
-      format.json { render json: { :errors => ["Passwords did not match"] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Passwords did not match"] },  :success => false, :status => :unauthorized}
+      format.json { render json: { :errors => [{:message => "Passwords did not match", :type => 'PasswordConfirmationError'}] },  :success => false, :status => :unauthorized}
+      format.xml { render xml: { :errors => [{:message => "Passwords did not match", :type => 'PasswordConfirmationError'}] },  :success => false, :status => :unauthorized}
     end
   end
 
   def wrong_login
     respond_to do |format|
-      format.json { render json: { :errors => ["Invalid email or password."] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Invalid email or password."] },  :success => false, :status => :unauthorized}
+      format.json { render json: { :errors => [{:type => 'AuthFailedError', :message => "Invalid email or password"}] },  :success => false, :status => :unauthorized}
+      format.xml { render xml: { :errors => [{:type => 'AuthFailedError', :message => "Invalid email or password"}] },  :success => false, :status => :unauthorized}
     end
   end
 end
