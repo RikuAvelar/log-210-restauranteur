@@ -20,12 +20,18 @@ class ApplicationController < ActionController::Base
   def set_up_user_vars
     @current_user = nil
     @user_token = nil
+    @invalid_token = false
   end
 
   def authenticate_user_from_token!
     token_secret = ENV['SECRET_TOKEN'] || 'SECRET'
     user_auth_token = request.headers[:Authorization].presence
-    user_token = user_auth_token && JWT.decode(user_auth_token.to_s, token_secret)
+    begin
+      user_token = user_auth_token && JWT.decode(user_auth_token.to_s, token_secret)
+    rescue
+      JWT::DecodeError
+      @invalid_token = true
+    end
     # If there is no token, proceed as normal
     if user_token
       return expired_token_response if is_token_expired? user_token
@@ -33,6 +39,8 @@ class ApplicationController < ActionController::Base
       if user
         sign_in :user, user, store: false
         @current_user = user
+      else
+        @invalid_token = true
       end
     end
   end
@@ -50,21 +58,25 @@ class ApplicationController < ActionController::Base
 
   def expired_token_response
     respond_to do |format|
-      format.json { render json: { :errors => ["Token has expired"] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Token has expired"] },  :success => false, :status => :unauthorized}
+      format.json { render json: { :errors => [{:type => "ExpiredTokenError", :message => "Token has expired"}] },  :success => false, :status => :bad_request}
+      format.xml { render xml: { :errors => [{:type => "ExpiredTokenError", :message => "Token has expired"}] },  :success => false, :status => :bad_request}
     end
   end
 
   def unauthorized_response
+    json_response = { :errors => [{:type => "UnauthorizedError", :message => "This resource requires authentication"}] }
+    if @invalid_token
+      json_response[:errors].push({:type => "InvalidToken", :message => "This token is not a valid token"})
+    end
     respond_to do |format|
-      format.json { render json: { :errors => ["Requires authentication"] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Requires authentication"] },  :success => false, :status => :unauthorized}
+      format.json { render json: json_response,  :success => false, :status => :unauthorized}
+      format.xml { render xml: json_response,  :success => false, :status => :unauthorized}
     end
   end
 
   def forbidden_response
     respond_to do |format|
-      format.json { render json: { :errors => ["You are not authorized to view this"] },  :success => false, :status => :forbidden}
+      format.json { render json: { :errors => [{:type => "ForbiddenError", :message => "You are not authorized to view perform this action."}] },  :success => false, :status => :forbidden}
       format.xml { render xml: { :errors => ["You are not authorized to view this"] },  :success => false, :status => :forbidden}
     end
   end
