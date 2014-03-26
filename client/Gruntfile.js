@@ -72,7 +72,8 @@ module.exports = function (grunt) {
         host: 'localhost',
         port: 3000,
         https: false,
-        changeOrigin: false
+        changeOrigin: false,
+        xforward: false
       }],
       livereload: {
         options: {
@@ -80,7 +81,24 @@ module.exports = function (grunt) {
           base: [
             '.tmp',
             '<%= yeoman.app %>'
-          ]
+          ],
+          middleware: function (connect, options) {
+            var middlewares = [];
+
+            if (!Array.isArray(options.base)) {
+              options.base = [options.base];
+            }
+
+            // Setup the proxy
+            middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+            // Serve static files
+            options.base.forEach(function(base) {
+              middlewares.push(connect.static(base));
+            });
+
+            return middlewares;
+          }
         }
       },
       test: {
@@ -314,8 +332,7 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'compass:server',
-        'configureProxies:server'
+        'compass:server'
       ],
       test: [
         'compass'
@@ -372,6 +389,7 @@ module.exports = function (grunt) {
       'clean:server',
       'bower-install',
       'concurrent:server',
+      'configureProxies:server',
       'autoprefixer',
       'connect:livereload',
       'watch'
