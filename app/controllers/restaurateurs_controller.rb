@@ -1,5 +1,10 @@
 class RestaurateursController < ApplicationController
   respond_to :json
+
+  before_filter do |c|
+    c.require_auth!()
+  end
+
   def create
 
     # RDCU - CU01 : Demarrer Ajout Restaurateur (API)
@@ -33,8 +38,15 @@ class RestaurateursController < ApplicationController
     end
   end
 
-  def show
+  def index
+    @restaurateurs = Restaurateur.all
+  end
 
+  def show
+    rest = User.find_by_id(params[:id])
+    if rest
+      @restaurateur = rest.account
+    end
   end
 
   private

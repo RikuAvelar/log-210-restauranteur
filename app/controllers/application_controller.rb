@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    if @current_user.present
+    if @current_user
       @current_user
     end
   end

@@ -41,6 +41,17 @@ class ClientsController < ApplicationController
     end
   end
 
+  def show
+    client = User.find_by_id(params[:id])
+    if client
+      @client = client.account
+    end
+  end
+
+  def index
+    @clients = Client.all
+  end
+
   private
 
   def bad_request
