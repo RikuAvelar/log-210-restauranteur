@@ -21,7 +21,7 @@ angular.module('clientApp')
     function populateMenu(){
       var user = AuthService.currentUser();
       switch(user.type) {
-        case 'client':
+        case 'Client':
           $scope.menuItems = [{
             location: '/orderUp',
             name: 'Place Order'
@@ -30,13 +30,13 @@ angular.module('clientApp')
             name: 'Account Control'
           }].concat(defaultMenuItems);
           break;
-        case 'livreur':
+        case 'Livreur':
           $scope.menuItems = [{
             location: '/delivery',
             name: 'Prendre Livraison'
           }].concat(defaultMenuItems);
           break;
-        case 'entrepreneur':
+        case 'Entrepreneur':
           $scope.menuItems = [{
             location: '/restaurateurs',
             name: 'Gérer Restaurateurs'
@@ -45,7 +45,7 @@ angular.module('clientApp')
             name: 'Gérer Restaurants'
           }].concat(defaultMenuItems);
           break;
-        case 'restaurateur':
+        case 'Restaurateur':
           $scope.menuItems = [{
             location: '/orders',
             name: 'Prendre une Commande',

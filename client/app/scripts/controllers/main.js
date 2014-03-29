@@ -17,13 +17,13 @@ angular.module('clientApp')
     $scope.tagLine = function(){
       if(AuthService.isAuthenticated()) {
         switch($scope.UserInfo.type) {
-          case 'client':
+          case 'Client':
             return 'Delicious meals at your fingertips.';
-          case 'livreur':
+          case 'Livreur':
             return 'Someone\'s got the need for feed';
-          case 'restaurateur':
+          case 'Restaurateur':
             return 'The entire world at your fingertips';
-          case 'entrepreneur':
+          case 'Entrepreneur':
             return 'JOHN CONNOR HAS NOT YET BEEN LOCATED';
         }
       } else {

@@ -4,9 +4,9 @@ class TokensController < ApplicationController
 
   def create
     # Creates a new token
-    return bad_confirm unless password_confirmed
+    # return bad_confirm unless password_confirmed # Why would we need a password confirmation? It's a login
     user = User.find_by_email(user_params[:email])
-    if user.valid_password?(user_params[:password])
+    if user && user.valid_password?(user_params[:password])
       token = user.generate_auth_token
       login_success token, user
     else
@@ -32,10 +32,7 @@ class TokensController < ApplicationController
   end
 
   def login_success(token, user)
-    respond_to do |format|
-      format.json { render json: { :token => token, :user => {:id => user.id, :type => user.account_type} },  :success => true}
-      format.xml { render xml: { :token => token, :user => {:id => user.id, :type => user.account_type} },  :success => true}
-    end
+    render :json => { :token => token, :user => {:id => user.id, :type => user.account_type} },  :success => true
   end
 
   def password_confirmed
@@ -43,16 +40,10 @@ class TokensController < ApplicationController
   end
 
   def bad_confirm
-    respond_to do |format|
-      format.json { render json: { :errors => ["Passwords did not match"] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Passwords did not match"] },  :success => false, :status => :unauthorized}
-    end
+    render :json => { :errors => [{:message => "Passwords did not match", :type => 'PasswordConfirmationError'}] },  :success => false, :status => :unauthorized
   end
 
   def wrong_login
-    respond_to do |format|
-      format.json { render json: { :errors => ["Invalid email or password."] },  :success => false, :status => :unauthorized}
-      format.xml { render xml: { :errors => ["Invalid email or password."] },  :success => false, :status => :unauthorized}
-    end
+    render :json => { :errors => [{:type => 'AuthFailedError', :message => "Invalid email or password"}] }, :success => false, :status => :unauthorized
   end
 end
