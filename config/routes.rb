@@ -1,4 +1,9 @@
 Restauranteur::Application.routes.draw do
+
+  
+  #get "repas/nom:string"
+  #get "repas/description:string"
+  # get "repas/prix:numeric"
   # devise_for :users, :sessions => {}
 
   scope 'api/' do
