@@ -1,0 +1,13 @@
+{
+    email:,
+    password:,
+    password_confirmation:,
+    user: {
+        name:,
+        ...
+        addresses: [
+            {street_name: ,...}
+        ]
+    }
+}
+
