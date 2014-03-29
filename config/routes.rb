@@ -1,13 +1,13 @@
 Restauranteur::Application.routes.draw do
 
-  
+
   #get "repas/nom:string"
   #get "repas/description:string"
   # get "repas/prix:numeric"
   # devise_for :users, :sessions => {}
 
   scope 'api/' do
-    resources :restaurateurs, :restaurants, :clients, :tokens
+    resources :restaurateurs, :restaurants, :clients, :tokens, :menus
 
     # devise_scope :user do
     #   post 'sessions' => 'sessions#create', as: :new_user_session

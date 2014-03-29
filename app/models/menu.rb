@@ -1,3 +1,4 @@
 class Menu < ActiveRecord::Base
-  belongs_to :restaurateur
+  belongs_to :restaurant
+  has_many :repas
 end
