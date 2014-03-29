@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20140329151009) do
 
   create_table "menus", force: true do |t|
     t.string   "nom"
+    t.integer  "restaurant_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
