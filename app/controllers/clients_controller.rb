@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
   respond_to :json
-  before_filter :require_auth!
+  #before_filter :require_auth!
 
   def create
     # RDCU - CU03 : Demarrer Creation de Compte
