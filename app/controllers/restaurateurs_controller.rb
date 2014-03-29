@@ -1,9 +1,9 @@
 class RestaurateursController < ApplicationController
   respond_to :json
 
-  before_filter do |c|
-    c.require_auth!()
-  end
+  # before_filter do |c|
+  #   c.require_auth!()
+  # end
 
   def create
 
