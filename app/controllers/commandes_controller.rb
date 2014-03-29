@@ -1,70 +1,55 @@
 class CommandesController < ApplicationController
-	def 
 
+  before_filter :except => [:index, :show] do |c|
+    :require_auth!('Restaurateur')
+  end
+
+	def create
 	 # RDCU - CU05 : Demarrer création de commande
-    @commande = Commande.new()
-    @commandeClient = CommandeClient.new(commandeClient_params)
+    commande = Commande.new()
+    client = User.find({id: params[:userId], type: 'Client'}).first.account;
 
-    if not restaurant_params.empty?
-        @resto = Restaurant.find_by_id(restaurant_params)
-        if @resto
-          @commande.restaurant.push(@resto)
+    return :bad_request_response unless client
+
+    if not repas_params.empty
+      has_at_least_one_line = false
+      repas_params.each do |rep|
+        line = CommandeLine.new()
+        repas = Repas.find_by_id(rep.id)
+        if repas
+          line.repas = repas
+          commande.commandeLines.push(lines)
+          has_at_least_one_line = true
         end
+      end
+      return :bad_request_response unless has_at_least_one_line
+    else
+      return :bad_request_response
     end
 
-    if not repas_params.empty?
-        @repas = Repas.find_by_id(repas_params)
-        if @repas 
-          @commande.repas.push(@repas)
-        end
-    end
-
-    @livraison = Livraison.new(:dateTime, @commande)
+    livraison = Livraison.new(params[:deliveryDate])
+    commande.livraison = livraison
 
      # Response
 
-    respond_to do |format|
-      if @commande.save
-        format.json { render json: @commande, status: :created }
-        format.xml { render xml: @commande, status: :created }
-      else
-        format.json { render json: @commande.errors, status: :unprocessable_entity }
-        format.xml { render xml: @commande.errors, status: :unprocessable_entity }
-      end
+    if commande.save
+      render :json => commande, :status => :created
+    else
+      render :json => commande.errors, :status => :unprocessable_entity
     end
+  end
 
-    respond_to do |format|
-      if @commandeClient.save
-        format.json { render json: @commande, status: :created }
-        format.xml { render xml: @commande, status: :created }
-      else
-        format.json { render json: @commande.errors, status: :unprocessable_entity }
-        format.xml { render xml: @commande.errors, status: :unprocessable_entity }
-      end
-    end
-
-    respond_to do |format|
-      if @livraison.save
-        format.json { render json: @commande, status: :created }
-        format.xml { render xml: @commande, status: :created }
-      else
-        format.json { render json: @commande.errors, status: :unprocessable_entity }
-        format.xml { render xml: @commande.errors, status: :unprocessable_entity }
-      end
-    end
-   
   def update
-    @restaurateur = User.where({id: params[:id], account_type: 'Restaurateur'}).first
-    return bad_request unless @restaurateur.present?
-    @restaurateur.commandeClient.comamande.statut.update(:statut)
-   
+    commande = Commande.find_by_id(params[:id])
+    commande.state = params[:state]
+
     respond_to do |format|
-      if @restaurateur.save
+      if commande.save
         format.json { head :no_content, status: :ok }
         format.xml { head :no_content, status: :ok }
       else
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-        format.xml { render xml: @client.errors, status: :unprocessable_entity }
+        format.json { render json: client.errors, status: :unprocessable_entity }
+        format.xml { render xml: client.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -78,18 +63,14 @@ class CommandesController < ApplicationController
   end
 
   def repas_params
-    if params.has_key?(:repas)
-      params.require(:user).require(:repas)
-    else
-      return []
-    end
+    params.permit(:repas => [:repasId, :quantity])
   end
 
   def commandeClient_params
     params.permit(:commandeID, :clientID)
   end
 
-end 
+end
 
 
 

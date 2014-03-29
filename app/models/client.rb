@@ -5,4 +5,5 @@ class Client < ActiveRecord::Base
   has_one :user, :as => :account
 
   has_many :addresses, :as => :located
+  has_many :commandes
 end

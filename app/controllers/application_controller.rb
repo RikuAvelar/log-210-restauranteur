@@ -72,6 +72,10 @@ class ApplicationController < ActionController::Base
     render :json => { :errors => [{:type => "ForbiddenError", :message => "You are not authorized to view perform this action."}] },  :success => false, :status => :forbidden
   end
 
+  def bad_request_response
+    render :json => { :errors => [{:type => "BadRequestError", :message => "We could not process your request. Please make sure you have all the necessary data and try again"}] },  :success => false, :status => :bad_request
+  end
+
   def current_user
     if @current_user
       @current_user
