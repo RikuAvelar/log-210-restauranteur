@@ -5,7 +5,7 @@ class MenusController < ApplicationController
     menu = Menu.new(menu_params)
     restaurant = Restaurant.find_by_id(params[:restaurantId])
 
-    return :bad_request_response unless restaurant
+    return bad_request_response unless restaurant
 
     menu.restaurant = restaurant
 
