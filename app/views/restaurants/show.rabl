@@ -1,10 +1,16 @@
 object @restaurant
 
-attributes :name
+attributes :name, :id
 
 node :restaurateurId do |resto|
   if resto.restaurateur
     resto.restaurateur.user.id
+  end
+end
+
+node :restaurateurName do |resto|
+  if resto.restaurateur
+    resto.restaurateur.name
   end
 end
 
