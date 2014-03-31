@@ -2,7 +2,7 @@
 
 angular.module('clientApp')
   .factory('Menu', function ($resource, AuthService) {
-    var menu = $resource('/api/menus/:id', null, {
+    var menu = $resource('/api/menus/:id', {id: '@id'}, {
       'getOwn': {
         method: 'GET',
         params: {'filter_by[restaurateur]': AuthService.currentUser().id},
@@ -10,7 +10,8 @@ angular.module('clientApp')
       },
       'get': 'GET',
       'all': {method: 'GET', isArray: true},
-      'create': 'POST'
+      'put': {method: 'PUT'},
+      '$update': {method: 'PUT'}
     });
 
     return menu;

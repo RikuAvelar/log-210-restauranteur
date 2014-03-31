@@ -61,7 +61,7 @@ angular.module('clientApp', [
         templateUrl: 'views/orders.html',
         controller: 'OrdersCtrl'
       })
-      .when('/menus/:id?', {
+      .when('/menus/:id?/:restaurant?', {
         templateUrl: 'views/menu.html',
         controller: 'MenuCtrl'
       })
