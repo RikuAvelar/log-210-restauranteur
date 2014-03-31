@@ -1,11 +1,20 @@
 <div class="list-group">
-  <a ng-repeat="r in [1,2,3]" href="#/restaurateurs/1" class="list-group-item row">
+  <a ng-repeat="r in restaurateurs" ng-href="#/restaurateurs/{{r.id}}" class="list-group-item row">
     <div class="col-md-10">
-      <h4 class="list-group-item-heading">Restaumann Smith <small>restaumann</small></h4>
+      <h4 class="list-group-item-heading">{{r.name}} <small>{{r.email}}</small></h4>
       <p class="list-group-item-text">
-        RestoPlus, Restostop, Restomax
+        {{restaurantList(r)}}
       </p>
     </div>
     <span class="glyphicon glyphicon-chevron-right pull-right" style="margin-top:1em"></span>
+  </a>
+
+  <a ng-href="#/restaurateurs/new" class="list-group-item list-group-item-info row">
+    <div class="col-md-10 media">
+      <h4 class="list-group-item-heading">Add new Restaurateur</h4>
+      <p class="list-group-item-text">
+      </p>
+    </div>
+    <span class="glyphicon glyphicon-chevron-right pull-right"></span>
   </a>
 </div>

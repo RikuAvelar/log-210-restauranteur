@@ -10,8 +10,8 @@ class RestaurantsController < ApplicationController
 
     # RDCU - CU02 - Assigner Restaurateur
 
-    if params[:restaurateur]
-      res = User.find(params[:restaurateur]).account
+    if params[:restaurateurId]
+      res = User.find_by_id(params[:restaurateurId]).account
       resto.restaurateur = res
     end
 
