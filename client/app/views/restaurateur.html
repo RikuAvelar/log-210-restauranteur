@@ -9,12 +9,12 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <input type="text" name="name" class="form-control" ng-value="user.name" placeholder="Name">
+          <input type="text"  class="form-control" ng-model="currentRestaurateur.name" placeholder="Name">
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <input type="text" name="username" ng-value="user.username" class="form-control" placeholder="Username">
+          <input type="email" ng-value="currentRestaurateur.email" class="form-control" placeholder="Email">
         </div>
       </div>
     </div>
@@ -22,12 +22,12 @@
     <div class="row">
       <div class="col-xs-6">
         <div class="form-group">
-          <input type="password" type="newPassword" name="password" ng-model="user.newPassword" class="form-control" placeholder="[Unchanged]">
+          <input type="password" type="newPassword" name="password" ng-model="currentRestaurateur.password" class="form-control" placeholder="[Unchanged]">
         </div>
       </div>
       <div class="col-xs-6">
         <div class="form-group">
-          <input type="password" name="password_confirmation" ng-model="user.newPasswordConfirmation" password-verify="user.newPassword" class="form-control" placeholder="Confirm Password">
+          <input type="password" name="password_confirmation" ng-model="currentRestaurateur.passwordConfirmation" password-verify="user.newPassword" class="form-control" placeholder="Confirm Password">
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
     <legend>Restaurants</legend>
 
     <div class="list-group">
-      <label ng-repeat="resto in [true, false, true] track by $index" class="list-group-item clickable" ng-class="{'selected': resto}">Restostop <input ng-model="resto" type="checkbox" class="pull-right"></label>
+      <label ng-repeat="resto in restaurants" class="list-group-item clickable" ng-class="{'selected': restoIsSelected(resto)}">Restostop <input ng-model="resto" type="checkbox" class="pull-right"></label>
     </div>
 
   </fieldset>

@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('clientApp')
-  .factory('Restaurateur', function ($resource, AuthService) {
+angular.module('clientApp').factory('Restaurateur', function ($resource, AuthService) {
     var restaurateur = $resource('/api/restaurateurs/:id', {id: '@id'}, {
       'get': 'GET',
       'all': {method: 'GET', isArray: true},
