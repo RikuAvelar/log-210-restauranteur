@@ -7,7 +7,7 @@ angular.module('clientApp')
 
     if(!$routeParams.id) {
       Menu.getOwn({}, function(menus){
-        $scope.menus = _.groupBy(menus, 'restaurantId');
+        $scope.menus = _.groupBy(menus, 'restaurant_id');
       });
     } else {
       if ($routeParams.id !== 'new') {
@@ -15,7 +15,7 @@ angular.module('clientApp')
       } else {
         $scope.currentMenu = new Menu();
         $scope.currentMenu.repas = [{isPlaceholder: true, nom: 'Please add a meal'}];
-        $scope.currentMenu.restaurantId = $routeParams.restaurant;
+        $scope.currentMenu.restaurant_id = $routeParams.restaurant;
       }
     }
 
@@ -24,7 +24,7 @@ angular.module('clientApp')
           .test(value))
           return Number(value);
       return NaN;
-    }
+    };
 
     var addRepas = function(nouveauRepas){
       var repas = _.clone(nouveauRepas);
@@ -38,7 +38,7 @@ angular.module('clientApp')
 
     var cleanRepasArray = function(){
       // Remove placeholders
-      $scope.currentMenu.repas = _.without($scope.currentMenu, {isPlaceholder: true});
+      _.remove($scope.currentMenu.repas, function(r){ return r.isPlaceholder});
     };
 
     $scope.addOrModifyRepas = function(repas){
@@ -71,8 +71,7 @@ angular.module('clientApp')
       } else {
         promise = $scope.currentMenu.$save();
       }
-
-      console.log(promise);
+      promise.then($location.path('/menus'));
     };
 
     $scope.modifyingMenu = function(){

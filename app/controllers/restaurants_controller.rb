@@ -18,7 +18,8 @@ class RestaurantsController < ApplicationController
     # Response
 
     if resto.save
-      render :json => resto, :status => :created
+      @restaurant = restaurant;
+      render 'restaurants/show'
     else
       render :json => resto.errors, :status => :unprocessable_entity
     end

@@ -12,6 +12,10 @@
                 </a></li>
                 <li ng-class="{active: currentStep == 3, disabled: !stepReady[3]}"><a ng-click="showStep(3)">
                     <h4 class="list-group-item-heading">Step 3</h4>
+                    <p class="list-group-item-text">Select your address</p>
+                </a></li>
+                <li ng-class="{active: currentStep == 4, disabled: !stepReady[4]}"><a ng-click="showStep(4)">
+                    <h4 class="list-group-item-heading">Step 3</h4>
                     <p class="list-group-item-text">Confirm your hunger</p>
                 </a></li>
             </ul>
@@ -23,41 +27,51 @@
 
 <div class="restaurant-select" ng-show="currentStep == 1">
   <div class="row">
-    <div class="col-sm-6 col-md-4 restaurant" ng-repeat="restau in [1,2,3,4,5,6,7]">
+    <div class="col-sm-6 col-md-4 restaurant" ng-repeat="resto in restaurants">
       <div class="thumbnail">
         <img data-src="holder.js/300x200" alt="300x200" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE1MCIgeT0iMTAwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjE5cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MzAweDIwMDwvdGV4dD48L3N2Zz4=" style="width: 300px; height: 200px;">
         <div class="caption">
-          <h3>Restaurant</h3>
-          <p>This is a tasty-looking place.</p>
-          <p><a class="btn btn-primary" role="button">Select</a></p>
+          <h3>{{resto.name}}</h3>
+          <p>{{resto.description}}</p>
+          <p>
+            <a class="btn btn-primary" ng-hide="selectedRestaurant == resto.id" role="button" ng-click="selectRestaurant(resto.id)">Select</a>
+            <a class="btn btn-success" ng-show="selectedRestaurant == resto.id" role="button" ng-click="nextStep()">Selected <span class="glyphicon glyphicon-ok"></span></a>
+          </p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div ng-repeat="menus in [1,2,3]" ng-show="currentStep == 2" class="food-menu">
-  <h2>Food Menu</h2>
-  <ul class="list-group">
-    <li ng-repeat="items in [1,2,3]" class="row list-group-item">
-      <div class="col-md-9 media">
-        <a class="pull-left">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <h3 class="list-group-item-heading">Food-ghetti</h3>
-        <p class="list-group-item-text">A description of the wonderful foodghetti</p>
-      </div>
-      <div class="col-md-3 pull-right">
-        <button class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
-        <span class="badge">2</span>
-        <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
-      </div>
+<div class="menu-list" ng-show="currentStep == 2" class="food-menu">
+  <div ng-repeat="menu in menus" >
+    <h2>{{menu.nom}}</h2>
+    <ul class="list-group">
+      <li ng-repeat="repas in menu.repas" class="row list-group-item">
+        <div class="col-md-9 media">
+          <a class="pull-left">
+            <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+          </a>
+          <h3 class="list-group-item-heading">{{repas.nom}} <small><span class="label label-default">{{currency(repas.prix)}}</span></small></h3>
+          <p class="list-group-item-text">{{repas.description}}</p>
+        </div>
+        <div class="col-md-3 pull-right">
+          <button class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
+          <span class="badge">0</span>
+          <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
 
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
+  <button class="btn btn-success btn-lg row" ng-click="nextStep()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
 </div>
 
-<div class="confirm-order row" ng-show="currentStep == 3">
+<div class="address-list" ng-show="currentStep == 3">
+  <button class="btn btn-success btn-lg row" ng-click="nextStep()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+</div>
+
+<div class="confirm-order row" ng-show="currentStep == 4">
   <ul class="list-group col-md-5 col-sm-12">
     <li ng-repeat="items in [1,2,3]" class="row list-group-item">
       <div class="media">
