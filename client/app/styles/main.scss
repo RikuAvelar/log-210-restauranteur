@@ -220,6 +220,12 @@ body > .container {
     }
 }
 
+@media screen and (min-width: 1024px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
 @media screen and (max-width: 991px) {
   .container{
     margin-top: 20px;
