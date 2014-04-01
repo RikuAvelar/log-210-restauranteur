@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="form-group">
-          <input type="text" name="name" class="form-control" ng-value="user.name" placeholder="Name">
+          <input type="text" name="name" class="form-control" ng-model="currentRestaurant.name" placeholder="Name">
         </div>
       </div>
     </div>
@@ -17,10 +17,14 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="form-group">
-          <select name="restaurateur" class="form-control">
+          <!--<select name="restaurateur" class="form-control">
             <option value=''>-- Select Restaurateur --</option>
             <option value='2'>Restaumann</option>
-          </select>
+          </select>-->
+		  
+		  <select  class="form-control" ng-model="currentRestaurant.restaurateur" ng-options="r as r.name for r in restaurateurs">
+			<option value="">-- Choose a Restaurateur --</option>
+		  </select>
         </div>
       </div>
   </fieldset>
@@ -31,12 +35,12 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <input ng-required="isRequired('address.city')" ng-disabled="isDisabled('address.city')" class="form-control" type="text" name="city" placeholder="City" ng-model="user.address.city">
+          <input ng-required="isRequired('address.city')" ng-disabled="isDisabled('address.city')" class="form-control" type="text" name="city" placeholder="City" ng-model="currentRestaurant.address.city">
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <input ng-required="isRequired('address.province')" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="user.address.province">
+          <input ng-required="isRequired('address.province')" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="currentRestaurant.address.province">
         </div>
       </div>
     </div>
@@ -44,14 +48,15 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <input ng-required="isRequired('address.postalCode')" ng-disabled="isDisabled('address.postalCode')" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="user.address.postalCode">
+          <input ng-required="isRequired('address.postalCode')" ng-disabled="isDisabled('address.postalCode')" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="currentRestaurant.address.postalCode">
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <select ng-require="isRequired('address.country')" ng-disabled="isDisabled('address.country')" ng-model="user.address.country" class="form-control" name="country">
+          <select ng-require="isRequired('address.country')" ng-disabled="isDisabled('address.country')" ng-model="currentRestaurant.address.country" class="form-control" name="country">
             <option value="">-- Select a Country --</option>
-            <option value="CA">Canada</option>
+            <option ng-selected="currentRestaurant.address.country == 'Canada'" value="Canada">Canada</option>
+			<option ng-selected="currentRestaurant.address.country == 'Eagleland'" value="Eagleland">Eagleland</option>
           </select>
         </div>
       </div>

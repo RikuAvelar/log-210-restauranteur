@@ -56,10 +56,6 @@ ActiveRecord::Schema.define(version: 20140329151009) do
   end
 
   create_table "repas", force: true do |t|
-    t.string   "nom"
-    t.decimal  "prix"
-    t.text     "description"
-    t.integer  "menu_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
