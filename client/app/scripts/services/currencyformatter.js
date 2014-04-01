@@ -22,8 +22,15 @@ angular.module('clientApp')
       }
     };
 
+    var getTaxes = function(value) {
+      value = filterFloat(value);
+      return value * 0.15;
+    }
+
     // Public API here
     return {
-      currency: formatCurrency
+      currency: formatCurrency,
+      filterFloat: filterFloat,
+      taxes: getTaxes
     };
   });

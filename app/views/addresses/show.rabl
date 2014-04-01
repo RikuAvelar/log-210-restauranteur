@@ -1,3 +1,3 @@
 object @address
 
-attributes :street_name, :city, :province, :country, :is_default
+attributes :street_address, :city, :province, :country, :is_default

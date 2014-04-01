@@ -6,16 +6,16 @@
                     <h4 class="list-group-item-heading">Step 1</h4>
                     <p class="list-group-item-text">Select your Restaurant</p>
                 </a></li>
-                <li ng-class="{active: currentStep == 2, disabled: !stepReady[2]}"><a ng-click="showStep(2)">
+                <li ng-class="{active: currentStep == 2, disabled: !stepReady(2)}"><a ng-click="showStep(2)">
                     <h4 class="list-group-item-heading">Step 2</h4>
                     <p class="list-group-item-text">Order up some food</p>
                 </a></li>
-                <li ng-class="{active: currentStep == 3, disabled: !stepReady[3]}"><a ng-click="showStep(3)">
+                <li ng-class="{active: currentStep == 3, disabled: !stepReady(3)}"><a ng-click="showStep(3)">
                     <h4 class="list-group-item-heading">Step 3</h4>
                     <p class="list-group-item-text">Select your address</p>
                 </a></li>
-                <li ng-class="{active: currentStep == 4, disabled: !stepReady[4]}"><a ng-click="showStep(4)">
-                    <h4 class="list-group-item-heading">Step 3</h4>
+                <li ng-class="{active: currentStep == 4, disabled: !stepReady(4)}"><a ng-click="showStep(4)">
+                    <h4 class="list-group-item-heading">Step 4</h4>
                     <p class="list-group-item-text">Confirm your hunger</p>
                 </a></li>
             </ul>
@@ -56,37 +56,46 @@
           <p class="list-group-item-text">{{repas.description}}</p>
         </div>
         <div class="col-md-3 pull-right">
-          <button class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
-          <span class="badge">0</span>
-          <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+          <button class="btn btn-default" ng-click="decrementRepas(repas)"><span class="glyphicon glyphicon-minus"></span></button>
+          <span class="badge" ng-bind="getCurrentRepasCount(repas)">0</span>
+          <button class="btn btn-default" ng-click="incrementRepas(repas)"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
 
       </li>
     </ul>
   </div>
-  <button class="btn btn-success btn-lg row" ng-click="nextStep()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+  <button class="btn btn-success btn-lg row" ng-disabled="emptyOrder()" ng-click="nextStep(!emptyOrder())">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
 </div>
 
 <div class="address-list" ng-show="currentStep == 3">
-  <button class="btn btn-success btn-lg row" ng-click="nextStep()">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+  <ul class="list-group">
+    <li class="list-group-item" ng-click="selectAddress(addr)" ng-class="{'list-group-item-success': currentAddress == addr}" ng-repeat="addr in currentClient.addresses">
+      {{address(addr)}}
+      <span ng-show="currentAddress == addr" class="glyphicon glyphicon-ok pull-right"></span>
+    </li>
+  </ul>
+  <button class="btn btn-success btn-lg row" ng-disabled="!currentAddress" ng-click="nextStep(!!currentAddress)">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
 </div>
 
 <div class="confirm-order row" ng-show="currentStep == 4">
   <ul class="list-group col-md-5 col-sm-12">
-    <li ng-repeat="items in [1,2,3]" class="row list-group-item">
+    <li ng-repeat="(repasId, quantity) in currentOrder" class="row list-group-item">
       <div class="media">
         <a class="pull-left">
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <h3 class="list-group-item-heading">
-          Food-ghetti <span class="badge">2</span>
+          {{getRepasName(repasId)}} <span class="badge">{{quantity}}</span>
         </h3>
-        <p class="list-group-item-text">A description of the wonderful foodghetti</p>
+        <p class="list-group-item-text">{{getRepasDescription(repasId)}}</p>
       </div>
 
     </li>
   </ul>
   <div class="well col-md-6 col-md-offset-1 col-sm-12">
+    <p><strong>{{currentClient.name}}</strong></p>
+    <p><em>{{address(currentAddress)}}</em></p>
+    <hr>
     <table class="table table-hover">
       <thead>
         <tr>
@@ -96,21 +105,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="rows in [1,2,3,4]">
-          <td class="col-md-8"><em>Foodghetti</em></td>
-          <td class="col-md-2 text-center">2</td>
-          <td class="col-md-2 text-center">14$</td>
+        <tr ng-repeat="(repasId, quantity) in currentOrder">
+          <td class="col-md-8"><em>{{getRepasName(repasId)}}</em></td>
+          <td class="col-md-2 text-center">{{quantity}}</td>
+          <td class="col-md-2 text-center">{{getRowSubtotal(repasId, quantity)}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <td colspan="2" class="text-right"><strong>Subtotal:<br>Taxes:</strong></td>
-          <td class="text-center"><strong>56$<br>4$</strong></td>
+          <td class="text-center"><strong>{{getSubtotal(currentOrder)}}<br>{{getTaxes(currentOrder)}}</strong></td>
         </tr>
         <tr>
-          <td colspan="3" class="text-right"><h4>Total: <span class="text-danger">60$</span></h4></td>
+          <td colspan="3" class="text-right"><h4>Total: <span class="text-danger">{{getTotal(currentOrder)}}</span></h4></td>
         </tr>
       </tfoot>
     </table>
+    <button type="button" class="btn btn-success pull-right" ng-click="confirmOrder()">Confirm Order</button>
   </div>
 </div>
