@@ -8,10 +8,13 @@ Restauranteur::Application.routes.draw do
   # devise_for :users, :sessions => {}
 
   scope 'api/' do
+    get 'restaurants/commandes'
+
     resources :restaurateurs, :clients, :tokens, :menus, :commandes, :livraisons
     resources :restaurants do
       resources :menus
     end
+
 
     # devise_scope :user do
     #   post 'sessions' => 'sessions#create', as: :new_user_session

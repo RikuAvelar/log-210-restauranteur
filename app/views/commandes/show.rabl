@@ -13,3 +13,11 @@ end
 node :subtotal do |c|
   c.commandeLines.collect{ |cl| cl.subtotal }.sum
 end
+
+node :delivery_date do |c|
+  c.livraison.scheduled_date
+end
+
+node :address do |c|
+  partial 'addresses/show', :object => c.livraison.address
+end
