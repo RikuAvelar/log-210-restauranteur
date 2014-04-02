@@ -1,6 +1,6 @@
 class CommandeLine < ActiveRecord::Base
-  has_one :command
-  has_one :repas
+  belongs_to :commande
+  belongs_to :repas
 
   def prix
     repas.prix

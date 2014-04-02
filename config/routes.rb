@@ -8,7 +8,7 @@ Restauranteur::Application.routes.draw do
   # devise_for :users, :sessions => {}
 
   scope 'api/' do
-    resources :restaurateurs, :clients, :tokens, :menus
+    resources :restaurateurs, :clients, :tokens, :menus, :commandes, :livraisons
     resources :restaurants do
       resources :menus
     end

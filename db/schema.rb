@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140329151009) do
+ActiveRecord::Schema.define(version: 20140402150938) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_address"
@@ -32,20 +32,38 @@ ActiveRecord::Schema.define(version: 20140329151009) do
   end
 
   create_table "commande_lines", force: true do |t|
+    t.integer  "repas_id"
+    t.integer  "commande_id"
+    t.integer  "quantity"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "commandes", force: true do |t|
-    t.string   "statut"
-    t.integer  "livraison_id"
-    t.integer  "quantite"
+    t.string   "status"
+    t.integer  "restaurant_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "entrepreneurs", force: true do |t|
     t.string "name"
+  end
+
+  create_table "livraisons", force: true do |t|
+    t.datetime "scheduled_date"
+    t.datetime "delivered_date"
+    t.integer  "livreur_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commande_id"
+  end
+
+  create_table "livreurs", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "menus", force: true do |t|
@@ -56,6 +74,10 @@ ActiveRecord::Schema.define(version: 20140329151009) do
   end
 
   create_table "repas", force: true do |t|
+    t.string   "nom"
+    t.decimal  "prix"
+    t.text     "description"
+    t.integer  "menu_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,6 +87,7 @@ ActiveRecord::Schema.define(version: 20140329151009) do
     t.integer  "restaurateur_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
   end
 
   create_table "restaurateurs", force: true do |t|

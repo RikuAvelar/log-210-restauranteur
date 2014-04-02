@@ -4,6 +4,9 @@ class SetupController < ApplicationController
     # user = User.new({email: 'restaurateur@ent.com', password: '12345678', password_confirmation: '12345678'})
     # user.account = Restaurateur.new({name: 'Mr. Moneybucks'})
     # user.save()
+    user = User.new({email: 'livreur@test.com', password: '12345678', password_confirmation: '12345678'});
+    user.account = Livreur.new({name: 'Deli Vrymann'})
+    user.save();
     render json: user
   end
 end
