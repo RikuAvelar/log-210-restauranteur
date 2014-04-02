@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20140329151009) do
     t.string   "country"
     t.string   "province"
     t.string   "city"
+    t.string   "code_postal"
     t.boolean  "is_default"
     t.integer  "located_id"
     t.string   "located_type"

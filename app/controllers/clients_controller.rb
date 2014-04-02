@@ -13,31 +13,27 @@ class ClientsController < ApplicationController
 
     # Response
 
-    respond_to do |format|
-      if @client.save
-        format.json { render json: @client, status: :created }
-        format.xml { render xml: @client, status: :created }
-      else
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-        format.xml { render xml: @client.errors, status: :unprocessable_entity }
-      end
+    if @client.save
+      render json: @client,  status: :created
+    else
+      render json: @client.errors, status: :unprocessable_entity
     end
+    
+    return;
+
   end
 
   def update
-    @client = User.where({id: params[:id], account_type: 'Client'}).first
-    return bad_request unless @client.present?
-    @client_update = @client.account.update(update_client_params)
-    @user_update = @client.update(user_params)
-    @addr_update = update_addresses @client
-    respond_to do |format|
-      if @client.save
-        format.json { head :no_content, status: :ok }
-        format.xml { head :no_content, status: :ok }
-      else
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-        format.xml { render xml: @client.errors, status: :unprocessable_entity }
-      end
+    client = User.where({id: params[:id], account_type: 'Client'}).first
+    return bad_request_response unless client.present?
+    client_update = client.account.update(update_client_params)
+    user_update = client.update(user_params)
+    addr_update = update_addresses client
+    if client.save 
+      @client = client.account
+      render "clients/show"
+    else
+      render :json => @client.errors, status: :unprocessable_entity
     end
   end
 
@@ -53,13 +49,6 @@ class ClientsController < ApplicationController
   end
 
   private
-
-  def bad_request
-    respond_to do |format|
-      format.json { render json: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
-      format.xml { render xml: { :errors => ["Bad Request"] },  :success => false, :status => :bad_request}
-    end
-  end
 
   def update_addresses(client)
     all_address_params.each do |addrParam|
@@ -104,14 +93,14 @@ class ClientsController < ApplicationController
 
   def all_address_params
     if params.has_key? :user
-      params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :is_default])[:addresses]
+      params.require(:user).permit(:addresses => [:street_address, :city, :country, :province, :code_postal, :is_default])[:addresses]
     else
       return []
     end
   end
 
   def single_address_params(address)
-    @is_default = address.has_key? :is_default && address[:is_default]
-    return [:street_address => :street_address, :city => :city, :country => :country, :province => :province, :is_default => @is_default]
+    puts address
+    address.permit(:street_address, :city, :country, :province, :code_postal, :is_default)
   end
 end

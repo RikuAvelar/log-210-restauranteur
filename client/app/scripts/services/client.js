@@ -1,16 +1,13 @@
 'use strict';
 
 angular.module('clientApp')
-  .factory('Client', function () {
-    // Service logic
-    // ...
+  .factory('Client', function ($resource) {
+    var client = $resource('/api/clients/:id', {id: '@id'}, {
+      'get': 'GET',
+      'all': {method: 'GET', isArray: true},
+      'put': {method: 'PUT'},
+      '$update': {method: 'PUT'}
+    });
 
-    var meaningOfLife = 42;
-
-    // Public API here
-    return {
-      someMethod: function () {
-        return meaningOfLife;
-      }
-    };
+    return client;
   });

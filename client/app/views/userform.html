@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <input ng-required="true" type="text" name="name" ng-model="user.name" class="form-control" placeholder="Name">
+                  <input ng-required="true" type="text" name="name" ng-model="currentClient.user.name" class="form-control" placeholder="Name">
                 </div>
               </div>
             </div>
@@ -15,13 +15,13 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input ng-required="true" type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username">
+                  <input ng-required="true" type="text" name="email" ng-model="currentClient.email" class="form-control" placeholder="Email">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <!-- Input type can't be date : not enough cohesion between browser behaviors -->
-                  <input type="text" ng-required="true" class="form-control" ng-model="user.birthDate" datepicker-popup="yyyy-MM-dd" datepicker-options="{'show-weeks': false}" show-button-bar="false" placeholder="Date of Birth YYYY-MM-DD">
+                  <input type="text" ng-required="true" class="form-control" ng-model="currentClient.user.birth_date" datepicker-popup="yyyy-MM-dd" datepicker-options="{'show-weeks': false}" show-button-bar="false" placeholder="Date of Birth YYYY-MM-DD">
                 </div>
               </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <input type="tel" ng-required="true" name="telephone" ng-model="user.telephone" class="form-control" placeholder="Telephone Number">
+                  <input type="tel" ng-required="true" name="telephone" ng-model="currentClient.user.telephone" class="form-control" placeholder="Telephone Number">
                 </div>
               </div>
             </div>
@@ -37,12 +37,12 @@
             <div class="row">
               <div class="col-xs-6">
                 <div class="form-group">
-                  <input ng-required="true" type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password">
+                  <input ng-required="true" type="password" name="password" ng-model="currentClient.password" class="form-control" placeholder="Password">
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="form-group">
-                  <input ng-required="true" type="password" name="password_confirmation" ng-model="user.passwordConfirmation" password-verify="user.password" class="form-control" placeholder="Confirm Password">
+                  <input ng-required="true" type="password" name="password_confirmation" ng-model="currentClient.password_confirmation" password-verify="currentClient.password" class="form-control" placeholder="Confirm Password">
                 </div>
               </div>
             </div>
@@ -54,12 +54,12 @@
             <div class="row">
               <div ng-class="{'col-xs-12': !editForm, 'col-xs-9': editForm}">
                 <div class="form-group">
-                  <input ng-required="isRequired('address.address')" ng-disabled="isDisabled('address.address')" class="form-control" type="text" name="address" placeholder="Address line" ng-model="user.address.address">
+                  <input ng-required="isRequired('address.address')" ng-disabled="isDisabled('address.address')" class="form-control" type="text" name="address" placeholder="Address line" ng-model="currentAddress.street_address">
                 </div>
               </div>
               <div class="col-xs-3" ng-hide="!editForm">
                 <div class="checkbox">
-                  <input type="checkbox" ng-model="user.address.isDefault"> Default Address
+                  <input type="checkbox" ng-model="currentAddress.isDefault"> Default Address
                 </div>
               </div>
             </div>
@@ -67,12 +67,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input ng-required="isRequired('address.city')" ng-disabled="isDisabled('address.city')" class="form-control" type="text" name="city" placeholder="City" ng-model="user.address.city">
+                  <input ng-required="isRequired('address.city')" ng-disabled="isDisabled('address.city')" class="form-control" type="text" name="city" placeholder="City" ng-model="currentAddress.city">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input ng-required="isRequired('address.province')" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="user.address.province">
+                  <input ng-required="isRequired('address.province')" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="currentAddress.province">
                 </div>
               </div>
             </div>
@@ -80,12 +80,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <input ng-required="isRequired('address.postalCode')" ng-disabled="isDisabled('address.postalCode')" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="user.address.postalCode">
+                  <input ng-required="isRequired('address.postalCode')" ng-disabled="isDisabled('address.postalCode')" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="currentAddress.code_postal">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <select ng-require="isRequired('address.country')" ng-disabled="isDisabled('address.country')" ng-model="user.address.country" class="form-control" name="country">
+                  <select ng-require="isRequired('address.country')" ng-disabled="isDisabled('address.country')" ng-model="currentAddress.country" class="form-control" name="country">
                     <option value="">-- Select a Country --</option>
                     <option value="CA">Canada</option>
                   </select>

@@ -5,6 +5,7 @@ class CreateAddresses < ActiveRecord::Migration
       t.string :country
       t.string :province
       t.string :city
+      t.string :code_postal
       t.boolean :is_default
 
       t.references :located, polymorphic: true

@@ -1,26 +1,16 @@
 'use strict';
 
 angular.module('clientApp')
-  .controller('AccountCtrl', function ($scope, AuthService) {
-    $scope.addresses = [{
-      address: '155 Mart Street',
-      city: 'Bergingham',
-      province: 'Minneberta',
-      postalCode: 'n0n 0n0',
-      country: 'CA',
-      isDefault: true
-    }];
+  .controller('AccountCtrl', 
+    function ($scope, Client, $routeParams, $location, AddressFormatter, AuthService) 
+    {
+    $scope.address = AddressFormatter.userAddress;
+    $scope.currentClient = Client.get({id: AuthService.currentUser().id});
+     
+    $scope.saveChanges = function(){
+    	console.log($scope.currentClient);
+      $scope.currentClient.$$update();
+    }
 
-    $scope.fullAddress = function(address){
-      var shownAddress = _.clone(address);
-
-      if(shownAddress.isDefault) {
-        shownAddress.isDefault = ' (Default) ';
-      } else {
-        delete shownAddress.isDefault;
-      }
-
-      return _.toArray(shownAddress).join(', ');
-    };
 
   });
