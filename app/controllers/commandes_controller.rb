@@ -16,13 +16,15 @@ class CommandesController < ApplicationController
 	def create
 	 # RDCU - CU05 : Demarrer création de commande
     commande = Commande.new()
-    client = User.where({id: params[:user_id], account_type: 'Client'}).first;
-    restaurant = Restaurant.find_by_id(params[:restaurant_id])
+    client = User.where({id: params[:client], account_type: 'Client'}).first;
+    restaurant = Restaurant.find_by_id(params[:restaurant])
+    address = Address.find_by_id(params[:address])
 
-    return :bad_request_response unless client and restaurant
+    return bad_request_response unless client and restaurant and address
 
     commande.client = client
     commande.restaurant = restaurant
+    commande.status = 'ordered';
 
     if not repas_params.empty?
       has_at_least_one_line = false
@@ -36,19 +38,21 @@ class CommandesController < ApplicationController
           has_at_least_one_line = true
         end
       end
-      return :bad_request_response unless has_at_least_one_line
+      return bad_request_response unless has_at_least_one_line
     else
-      return :bad_request_response
+      return bad_request_response
     end
 
     livraison = Livraison.new()
     livraison.scheduled_date = params[:scheduled_date]
+    livraison.address = address
     commande.livraison = livraison
 
      # Response
 
     if commande.save
-      render :json => commande, :status => :created
+      @commande = commande
+      render 'commandes/show', :status => :created
     else
       render :json => commande.errors, :status => :unprocessable_entity
     end

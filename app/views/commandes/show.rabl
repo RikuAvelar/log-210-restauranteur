@@ -6,7 +6,7 @@ child :client do |client|
   extends 'clients/show', :object => client.account
 end
 
-node :lines do |c|
+node :repas do |c|
   partial 'commandes/line', :object => c.commandeLines
 end
 

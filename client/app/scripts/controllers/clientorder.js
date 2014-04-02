@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clientApp')
-  .controller('ClientOrderCtrl', function ($scope, RestaurantMenu, Restaurant, CurrencyFormatter, Client, AuthService, AddressFormatter) {
+  .controller('ClientOrderCtrl', function ($scope, $location, RestaurantMenu, Restaurant, CurrencyFormatter, Client, AuthService, AddressFormatter, growlNotifications, Commande) {
     $scope.selectedRestaurant;
     $scope.currentOrder = {};
 
@@ -38,8 +38,32 @@ angular.module('clientApp')
           return false
         }
       }
+
+      if (step > 4) {
+        if(!$scope.deliveryDate) {
+          return false
+        }
+      }
       return true;
     };
+
+    $scope.confirmOrder = function(){
+      if(!$scope.stepReady(5)) {
+        return false;
+      }
+      var order = new Commande();
+      order.repas = _.map($scope.currentOrder, function(quantity, id){
+        return {repas_id: id, quantity: quantity};
+      });
+      order.restaurant = $scope.selectedRestaurant;
+      order.client = AuthService.currentUser().id;
+      order.scheduled_date = $scope.deliveryDate;
+      order.address = $scope.currentAddress.id;
+      order.$save().then(function(orderServ){
+        growlNotifications.add('Your order has successfully been placed. Your order confirmation number is ' + orderServ.id, 'success');
+        $location.path('/');
+      });
+    }
 
     $scope.showStep = function(step) {
       if(!$scope.stepReady(step)) return;
