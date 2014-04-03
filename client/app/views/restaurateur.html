@@ -1,6 +1,6 @@
 <a href="#/restaurateurs" class="btn"><span class="glyphicon glyphicon-chevron-left"></span> Return</a>
 
-<form role="form" name="userForm" ng-submit="register()">
+<form role="form" name="userForm" ng-submit="confirmRestaurateur()">
 
   <fieldset>
 
@@ -14,7 +14,7 @@
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <input type="email" ng-value="currentRestaurateur.email" class="form-control" placeholder="Email">
+          <input type="email" ng-model="currentRestaurateur.email" class="form-control" placeholder="Email">
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
     <legend>Restaurants</legend>
 
     <div class="list-group">
-      <label ng-repeat="resto in restaurants" class="list-group-item clickable" ng-class="{'selected': restoIsSelected(resto)}">Restostop <input ng-model="resto" type="checkbox" class="pull-right"></label>
+      <label ng-repeat="resto in restaurants" class="list-group-item clickable" ng-class="{'selected': selectedRestaurants[resto.id]}">Restostop <input ng-model="selectedRestaurants[resto.id]" ng-checked="restoIsSelected(resto)" type="checkbox" class="pull-right"></label>
     </div>
 
   </fieldset>

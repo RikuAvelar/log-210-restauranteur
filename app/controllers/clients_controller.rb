@@ -53,6 +53,7 @@ class ClientsController < ApplicationController
   def update_addresses(client)
     all_address_params.each do |addrParam|
       if not addrParam[:id]
+        client.account.save
         client.account.addresses.create(single_address_params addrParam)
       else
         addr = Address.where({id: addrParam[:id], located_type: 'Client'}).first

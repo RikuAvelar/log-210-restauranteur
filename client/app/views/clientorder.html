@@ -69,7 +69,7 @@
 
 <div class="address-list" ng-show="currentStep == 3">
   <ul class="list-group">
-    <li class="list-group-item" ng-click="selectAddress(addr)" ng-class="{'list-group-item-success': currentAddress == addr}" ng-repeat="addr in currentClient.addresses">
+    <li class="list-group-item" ng-click="selectAddress(addr)" ng-class="{'list-group-item-success': currentAddress == addr}" ng-repeat="addr in currentClient.user.addresses">
       {{address(addr)}}
       <span ng-show="currentAddress == addr" class="glyphicon glyphicon-ok pull-right"></span>
     </li>

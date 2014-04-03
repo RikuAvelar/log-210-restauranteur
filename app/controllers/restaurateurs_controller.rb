@@ -20,21 +20,43 @@ class RestaurateursController < ApplicationController
       restaurants_params.each do |restoId|
         @resto = Restaurant.find_by_id(restoId)
         if @resto
-          @res.restaurants.push(@resto)
+          @res.account.restaurants.push(@resto)
         end
       end
     end
 
     # Response
 
-    respond_to do |format|
-      if @res.save
-        format.json { render json: @res, status: :created }
-        format.xml { render xml: @res, status: :created }
-      else
-        format.json { render json: @res.errors, status: :unprocessable_entity }
-        format.xml { render xml: @res.errors, status: :unprocessable_entity }
+    if @res.save
+      @restaurateur = @res
+      render 'restaurateurs/show'
+    else
+      render :json => @res.errors, :status => :unprocessable_entity
+    end
+  end
+
+  def update
+    user = User.find_by_id(params[:id])
+    res = user.account
+
+    user.update(user_params)
+    res.update(restaurateur_params)
+
+    if not restaurants_params.empty?
+      res.restaurants = []
+      restaurants_params.each do |restoId|
+        resto = Restaurant.find_by_id(restoId)
+        if resto
+          res.restaurants.push(resto)
+        end
       end
+    end
+
+    if res.save
+      @restaurateur = res
+      render 'restaurateurs/show'
+    else
+      render :json => res.errors, :status => :unprocessable_entity
     end
   end
 

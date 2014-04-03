@@ -18,15 +18,15 @@ class RestaurantsController < ApplicationController
 
     # RDCU - CU02 - Assigner Restaurateur
 
-    if params[:restaurateurId]
-      res = User.find_by_id(params[:restaurateurId]).account
+    if params[:restaurateur_id]
+      res = User.find_by_id(params[:restaurateur_id]).account
       resto.restaurateur = res
     end
 
     # Response
 
     if resto.save
-      @restaurant = restaurant;
+      @restaurant = resto;
       render 'restaurants/show'
     else
       render :json => resto.errors, :status => :unprocessable_entity
@@ -39,8 +39,8 @@ class RestaurantsController < ApplicationController
     if params[:address]
       resto.address.update_attributes(address_params)
     end
-    if params[:restaurateur]
-      res = User.find(params[:restaurateur]).account
+    if params[:restaurateur_id]
+      res = User.find(params[:restaurateur_id]).account
       if res
         resto.restaurateur = res
       end
@@ -71,7 +71,7 @@ class RestaurantsController < ApplicationController
   end
 
   def address_params
-    params.require(:address).permit(:street_address, :country, :city, :province)
+    params.require(:address).permit(:street_address, :code_postal, :country, :city, :province)
   end
 
 end

@@ -1,6 +1,6 @@
 <a href="#/restaurants" class="btn"><span class="glyphicon glyphicon-chevron-left"></span> Return</a>
 
-<form role="form" name="userForm" ng-submit="register()">
+<form role="form" name="userForm" ng-submit="saveRestaurant()">
 
   <fieldset>
 
@@ -21,9 +21,9 @@
             <option value=''>-- Select Restaurateur --</option>
             <option value='2'>Restaumann</option>
           </select>-->
-		  
-		  <select  class="form-control" ng-model="currentRestaurant.restaurateur" ng-options="r as r.name for r in restaurateurs">
-			<option value="">-- Choose a Restaurateur --</option>
+
+		  <select  class="form-control" ng-model="currentRestaurant.restaurateur" ng-options="r.id as r.name for r in restaurateurs">
+      <option value="" ng-bind="defaultRestaurateur()">-- Choose a Restaurateur --</option>
 		  </select>
         </div>
       </div>
@@ -33,14 +33,9 @@
     <legend>Address</legend>
 
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <div class="form-group">
-          <input ng-required="isRequired('address.city')" ng-disabled="isDisabled('address.city')" class="form-control" type="text" name="city" placeholder="City" ng-model="currentRestaurant.address.city">
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <input ng-required="isRequired('address.province')" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="currentRestaurant.address.province">
+          <input ng-required="true" class="form-control" type="text" name="street_address" placeholder="Street Address" ng-model="currentRestaurant.address.street_address">
         </div>
       </div>
     </div>
@@ -48,7 +43,20 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <input ng-required="isRequired('address.postalCode')" ng-disabled="isDisabled('address.postalCode')" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="currentRestaurant.address.postalCode">
+          <input ng-required="true" class="form-control" type="text" name="city" placeholder="City" ng-model="currentRestaurant.address.city">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <input ng-required="true" ng-disabled="isDisabled('address.province')" class="form-control" type="text" name="province" placeholder="Province" ng-model="currentRestaurant.address.province">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <input ng-required="true" class="form-control" type="text" name="postal_code" placeholder="Postal Code" ng-model="currentRestaurant.address.postalCode">
         </div>
       </div>
       <div class="col-sm-6">
