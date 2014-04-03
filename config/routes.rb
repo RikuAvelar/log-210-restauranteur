@@ -9,6 +9,7 @@ Restauranteur::Application.routes.draw do
 
   scope 'api/' do
     get 'restaurants/commandes'
+    get 'restaurants/:id/commandes', to: 'restaurants#commandes', as: 'restaurant'
 
     resources :restaurateurs, :clients, :tokens, :menus, :commandes, :livraisons
     resources :restaurants do

@@ -25,9 +25,9 @@
     <h4 ng-hide="orderSelected()"><em class="text-muted">Please select an order</em></h4>
     <div class="order-receipt" ng-hide="!orderSelected()">
       <div class="receipt-header row">
-        <p class="text-left col-md-7"><b>{{currentOrder.user.name}}</b></p>
+        <p class="text-left col-md-7"><b>{{currentOrder.user.user.name}}</b></p>
         <p class="text-right col-md-5"><em>{{date(currentOrder.delivery_date)}}<br>#{{currentOrder.id}}</em></p>
-        <p class="text-right col-md-12">{{currentOrder.user.telephone}}<br><em>{{address(currentOrder.address)}}</em></p>
+        <p class="text-right col-md-12">{{currentOrder.user.user.telephone}}<br><em>{{address(currentOrder.address)}}</em></p>
       </div>
       <table class="table table-hover">
         <thead>
@@ -55,9 +55,9 @@
         </tfoot>
       </table>
       <div class="controls row">
-        <button class="btn btn-primary col-md-12">Commencer Préparation</button>
-        <button class="btn btn-success col-md-12">Finir Préparation</button>
-        <button class="btn btn-danger col-md-12">Annuler Préparation</button>
+        <button class="btn btn-primary col-md-12" ng-show="!currentOrder.status || currentOrder.status == 'ordered'" ng-click="startPrep(currentOrder)">Commencer Préparation</button>
+        <button class="btn btn-success col-md-12" ng-show="currentOrder.status == 'preparing'" ng-click="finishPrep(currentOrder)">Finir Préparation</button>
+        <button class="btn btn-danger col-md-12" ng-hide="currentOrder.status == 'ready'" ng-click="cancelOrder(currentOrder)">Annuler Préparation</button>
       </div>
     </div>
   </div>

@@ -1,7 +1,10 @@
 class RestaurantsController < ApplicationController
   def commandes
-    @restaurants = Restaurant.joins(:commandes).uniq.where({restaurateur_id: params[:restaurateur_id]})
-    puts @restaurants
+    if params[:id]
+      @restaurants = Restaurant.joins(:commandes).uniq.where({id: params[:id]}).first
+    else
+      @restaurants = Restaurant.joins(:commandes).uniq.where({restaurateur_id: params[:restaurateur_id]})
+    end
   end
 
   def create

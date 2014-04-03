@@ -63,20 +63,17 @@ class CommandesController < ApplicationController
       return :bad_request_response
     end
     commande = Commande.find_by_id(params[:id])
-    commande.status = params[:state]
+    commande.status = params[:status]
 
     if params[:status] == 'complete'
       commande.livraison.delivered_date = Time.now
     end
 
-    respond_to do |format|
-      if commande.save
-        format.json { head :no_content, status: :ok }
-        format.xml { head :no_content, status: :ok }
-      else
-        format.json { render json: client.errors, status: :unprocessable_entity }
-        format.xml { render xml: client.errors, status: :unprocessable_entity }
-      end
+    if commande.save
+      @commande = commande
+      render 'commandes/show'
+    else
+      render :json => commande.errors, status: :unprocessable_entity
     end
   end
 

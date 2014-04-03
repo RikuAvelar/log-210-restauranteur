@@ -50,4 +50,20 @@ angular.module('clientApp')
       var subtotal = $scope.subtotal(order);
       return subtotal + $scope.taxes(subtotal);
     };
+    $scope.startPrep = function(order){
+      Commande.$update({id: order.id, status: 'preparing'}).$promise.then(function(){
+        _.find($scope.restaurantOrders, function(resto){
+          return _.find(resto.commandes, {id: order.id});
+        }).$get();
+      });
+      $scope.currentOrder = null;
+    };
+    $scope.finishPrep = function(order){
+      Commande.$update({id: order.id, status: 'ready'}).$promise.then(function(){
+        _.find($scope.restaurantOrders, function(resto){
+          return _.find(resto.commandes, {id: order.id});
+        }).$get();
+      });
+      $scope.currentOrder = null;
+    };
   });
