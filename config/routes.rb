@@ -1,6 +1,7 @@
 Restauranteur::Application.routes.draw do
 
 
+  get "static/index"
   post "setup/init"
   #get "repas/nom:string"
   #get "repas/description:string"
