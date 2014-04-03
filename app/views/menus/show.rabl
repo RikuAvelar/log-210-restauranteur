@@ -6,10 +6,10 @@ child :repas do |rep|
   extends 'repas/index.rabl'
 end
 
-node :restaurantName do |m|
+node :restaurant_name do |m|
   m.restaurant.name
 end
 
-node :restaurantId do |m|
+node :restaurant_id do |m|
   m.restaurant.id
 end

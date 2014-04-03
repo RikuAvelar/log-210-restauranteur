@@ -11,3 +11,11 @@ angular.module('clientApp')
 
     return client;
   });
+
+/**
+* create => 'POST' (no ID)
+* index => 'GET' (without ID)
+* show => 'GET' (with ID)
+* update => 'PUT' (needs ID)
+* destroy => 'DELETE' (needs ID)
+**/

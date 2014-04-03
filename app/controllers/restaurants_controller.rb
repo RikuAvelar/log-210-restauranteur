@@ -1,4 +1,9 @@
 class RestaurantsController < ApplicationController
+  def commandes
+    @restaurants = Restaurant.joins(:commandes).uniq.where({restaurateur_id: params[:restaurateur_id]})
+    puts @restaurants
+  end
+
   def create
 
     # RDCU - CU02 - Demarrer Ajout Restaurant
@@ -18,7 +23,8 @@ class RestaurantsController < ApplicationController
     # Response
 
     if resto.save
-      render :json => resto, :status => :created
+      @restaurant = restaurant;
+      render 'restaurants/show'
     else
       render :json => resto.errors, :status => :unprocessable_entity
     end

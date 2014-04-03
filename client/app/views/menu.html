@@ -1,7 +1,7 @@
 <!-- Menu List -->
 
 <div class="restaurant" ng-repeat="(restaurantId, menus) in menus">
-  <h2>{{ menus[0].restaurantName }}</h2>
+  <h2>{{ menus[0].restaurant_name }}</h2>
   <div class="list-group">
     <a ng-repeat="menu in menus" ng-href="#/menus/{{menu.id}}" class="list-group-item row">
       <div class="col-md-10 media">

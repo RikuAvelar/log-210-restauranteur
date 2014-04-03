@@ -6,9 +6,10 @@ angular.module('clientApp')
     // ...
 
     var formatAddress = function(address){
-      var address = [address.street_address, address.city, address.province, address.country, address.postal_code];
+      var address = address || {};
+      var addressArray = [address.street_address, address.city, address.province, address.country, address.postal_code];
       // Recipe for address: remove undefined, join array with ,
-      return _.compact(address).join(', ');
+      return _.compact(addressArray).join(', ');
     };
 
     var formatUserAddress = function(address){
