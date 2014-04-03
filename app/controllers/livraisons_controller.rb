@@ -17,14 +17,11 @@ class LivraisonsController < ApplicationController
       livraison.delivered_date = Time.now
     end
 
-    respond_to do |format|
-      if commande.save
-        format.json { head :no_content, status: :ok }
-        format.xml { head :no_content, status: :ok }
-      else
-        format.json { render json: client.errors, status: :unprocessable_entity }
-        format.xml { render xml: client.errors, status: :unprocessable_entity }
-      end
+    if livraison.save
+      @livraison = livraison
+      render 'livraisons/show'
+    else
+      render :json => livraison.errors, :status => :unprocessable_entity
     end
   end
 end
