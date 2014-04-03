@@ -54,7 +54,7 @@
       <div class="controls row">
         <button class="btn btn-primary col-md-12" ng-show="selectedDelivery.commande.status == 'ready'" ng-click="startDelivery(selectedDelivery)">Start Delivery</button>
         <button class="btn btn-success col-md-12" ng-show="selectedDelivery.commande.status == 'delivering'" ng-click="finishDelivery(selectedDelivery)">Finish Delivery</button>
-        <button class="btn btn-secondary col-md-12" ng-hide="selectedDelivery.commande.status == 'complete'" ng-click="getPath(selectedDelivery)">Get Directions</button>
+        <button class="btn btn-secondary col-md-12" ng-hide="selectedDelivery.commande.status == 'complete'" ng-click="getDirections(selectedDelivery)">Get Directions</button>
       </div>
     </div>
   </div>

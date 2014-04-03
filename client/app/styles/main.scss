@@ -4,6 +4,33 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 
 $activeColor: #428bca;
 
+#theMap {
+    width:455px;
+    height:300px;
+    background:#ccc;
+    margin: 5px auto;
+}
+.mapContainer {
+    width:500px;
+    margin:5px auto;
+}
+img {
+    max-width: none;
+}
+#wrongAddress {
+    display:none;
+}
+.directions{
+  label {
+  font-size: 0.875em;
+  color: #4d4d4d;
+  cursor: pointer;
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.1875em; }
+
+}
+
 /* Animation */
 @mixin animateAll($speed: 300ms){
   -webkit-transition: $speed linear all; // Chrome

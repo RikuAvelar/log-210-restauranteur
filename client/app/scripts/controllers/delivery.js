@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clientApp')
-  .controller('DeliveryCtrl', function ($scope, Livraison, CurrencyFormatter, DateFormatter, AddressFormatter) {
+  .controller('DeliveryCtrl', function ($scope, Livraison, CurrencyFormatter, DateFormatter, AddressFormatter, $modal) {
     $scope.livraisons = Livraison.all();
 
     var capitalize = $scope.capitalize = function(string){
@@ -57,5 +57,11 @@ angular.module('clientApp')
 
     $scope.finishDelivery = function(liv){
       liv.$$update({status: 'complete'});
+    };
+
+    $scope.getDirections = function(liv){
+      $modal.open({
+        template: '<map type="roadmap" destination="' + AddressFormatter.address(liv.address) + '"></map>'
+      });
     };
   });
